@@ -1,3 +1,0 @@
-print('\\')
-string = '\\\\'
-print(string)
