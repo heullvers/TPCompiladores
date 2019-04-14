@@ -46,7 +46,7 @@ def isReserved(identificador, reservadas): #verifica se o identificador encontra
     except:
         return False
 
-def panicMode(palavraAtual, posicao, linha): #ignora os caracteres identificados até finalizar a palavra
+def tratamentoErroLexico(palavraAtual, posicao, linha): #ignora os caracteres identificados até finalizar a palavra
     palavra = palavraAtual
     caractere = linha[posicao]
     while((caractere != ' ') and (posicao < len(linha) - 1)):

@@ -3,9 +3,10 @@ from Token import *
 from Caracteres import *
 from Erro import *
 from funcoes import *
+from TabelaDeSimbolos import *
 
 
-nome_arquivo = 'exemplos/exemplo1.txt' #nome do arquivo
+nome_arquivo = 'exemplos/exemplo4.txt' #nome do arquivo
 info_arquivo = readFile(nome_arquivo) #cada elemento é uma linha do arquivo
 numero_linhas_arquivo = numberRows(info_arquivo) #número de linhas do arquivo
 
@@ -35,6 +36,7 @@ while (linha_atual < numero_linhas_arquivo):
         caractere = leitura_proximo['caractere'] #recebe o caractere
         posicao = leitura_proximo['posicao'] #recebe a posicao atual do ponteiro que está lendo o arquivo
         palavra = "" #palavra inicialmente vazia
+
         ### VERIFICAR SE É UM IDENTIFICADOR
         if(isLetter(caractere, letras)): #palavra iniciada com LETRA
             posicao += 1 #deixa o ponteiro apontado para o pŕoximo caractere a ser lido
@@ -75,29 +77,33 @@ while (linha_atual < numero_linhas_arquivo):
                         posicao += 1
                         caractere = getCaractere(linha, posicao)
                     if(isLetter(caractere, letras)):
-                        token = Token(tipoToken.NumFloat, palavra) 
+                        token = Token(tipoToken.NumFloat, palavra, indiceTs)
                         tokens.append(token)
+                        indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos para o próximo identificador
                         erro = Erro(linha_atual, posicao, caractere, 0)
                         erros.append(erro)
-                        posicao = panicMode(palavra, posicao, linha)
+                        posicao = tratamentoErroLexico(palavra, posicao, linha)
                     else:
-                        token = Token(tipoToken.NumFloat, palavra) 
+                        token = Token(tipoToken.NumFloat, palavra, indiceTs)
                         tokens.append(token)
+                        indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos para o próximo identificador
                 else:
                     palavra = palavra[:-1] #remove o ponto
-                    token = Token(tipoToken.NumInt, palavra) 
+                    token = Token(tipoToken.NumInt, palavra, indiceTs)
                     tokens.append(token)
+                    indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                     erro = Erro(linha_atual, posicao, caractere, 1)
                     erros.append(erro)
-                    posicao = panicMode(palavra, posicao, linha)
+                    posicao = tratamentoErroLexico(palavra, posicao, linha)
             else:
                 if(isLetter(caractere, letras)):
                     erro = Erro(linha_atual, posicao, caractere, 0)
                     erros.append(erro)
-                    posicao = panicMode(palavra, posicao, linha)                    
+                    posicao = tratamentoErroLexico(palavra, posicao, linha)                    
 
-                token = Token(tipoToken.NumInt, palavra) 
+                token = Token(tipoToken.NumInt, palavra, indiceTs)
                 tokens.append(token)
+                indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
 
         ##VERIFICAR SE É OPERADOR RELACIONAL MENOR OU MENOR IGUAL
         elif(caractere == '<'):
@@ -159,7 +165,7 @@ while (linha_atual < numero_linhas_arquivo):
                 tokens.append(token)
                 erro = Erro(linha_atual, posicao, caractere, 2)
                 erros.append(erro)
-                posicao = panicMode(palavra, posicao, linha)
+                posicao = tratamentoErroLexico(palavra, posicao, linha)
 
         ##VERIFICAR SE É OPERADOR ARITMÉTICO DE DIVISÃO OU COMENTÁRIO
         elif(caractere == '/'):
@@ -228,29 +234,33 @@ while (linha_atual < numero_linhas_arquivo):
                             posicao += 1
                             caractere = getCaractere(linha, posicao)
                         if(isLetter(caractere, letras)):
-                            token = Token(tipoToken.NumFloat, palavra) 
+                            token = Token(tipoToken.NumFloat, palavra, indiceTs)
                             tokens.append(token)
+                            indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos para o próximo identificador
                             erro = Erro(linha_atual, posicao, caractere, 0)
                             erros.append(erro)
-                            posicao = panicMode(palavra, posicao, linha)
+                            posicao = tratamentoErroLexico(palavra, posicao, linha)
                         else:
-                            token = Token(tipoToken.NumFloat, palavra) 
+                            token = Token(tipoToken.NumFloat, palavra, indiceTs)
                             tokens.append(token)
+                            indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos para o próximo identificador
                     else:
                         palavra = palavra[:-1] #remove o ponto
-                        token = Token(tipoToken.NumInt, palavra) 
+                        token = Token(tipoToken.NumInt, palavra, indiceTs)
                         tokens.append(token)
+                        indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                         erro = Erro(linha_atual, posicao, caractere, 1)
                         erros.append(erro)
-                        posicao = panicMode(palavra, posicao, linha)
+                        posicao = tratamentoErroLexico(palavra, posicao, linha)
 
                 else:
                     if(isLetter(caractere, letras)):
                         erro = Erro(linha_atual, posicao, caractere, 0)
                         erros.append(erro)
-                        posicao = panicMode(palavra, posicao, linha)
-                    token = Token(tipoToken.NumInt, palavra) 
+                        posicao = tratamentoErroLexico(palavra, posicao, linha)
+                    token = Token(tipoToken.NumInt, palavra, indiceTs)
                     tokens.append(token)
+                    indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
             else:
                 token = Token(tipoToken.OpAritAdic, palavra)
                 tokens.append(token)
@@ -281,28 +291,32 @@ while (linha_atual < numero_linhas_arquivo):
                             posicao += 1
                             caractere = getCaractere(linha, posicao)
                         if(isLetter(caractere, letras)):
-                            token = Token(tipoToken.NumFloat, palavra) 
+                            token = Token(tipoToken.NumFloat, palavra, indiceTs)
                             tokens.append(token)
+                            indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos para o próximo identificador
                             erro = Erro(linha_atual, posicao, caractere, 0)
                             erros.append(erro)
-                            posicao = panicMode(palavra, posicao, linha)
+                            posicao = tratamentoErroLexico(palavra, posicao, linha)
                         else:
-                            token = Token(tipoToken.NumFloat, palavra) 
+                            token = Token(tipoToken.NumFloat, palavra, indiceTs)
                             tokens.append(token)
+                            indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos para o próximo identificador
                     else:
                         palavra = palavra[:-1] #remove o ponto
-                        token = Token(tipoToken.NumInt, palavra) 
+                        token = Token(tipoToken.NumInt, palavra, indiceTs)
                         tokens.append(token)
+                        indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                         erro = Erro(linha_atual, posicao, caractere, 1)
                         erros.append(erro)
-                        posicao = panicMode(palavra, posicao, linha)
+                        posicao = tratamentoErroLexico(palavra, posicao, linha)
                 else:
                     if(isLetter(caractere, letras)):
                         erro = Erro(linha_atual, posicao, caractere, 0)
                         erros.append(erro)
-                        posicao = panicMode(palavra, posicao, linha)
-                    token = Token(tipoToken.NumInt, palavra) 
+                        posicao = tratamentoErroLexico(palavra, posicao, linha)
+                    token = Token(tipoToken.NumInt, palavra, indiceTs)
                     tokens.append(token)
+                    indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
             else:
                 token = Token(tipoToken.OpAritSub, palavra)
                 tokens.append(token)
@@ -382,11 +396,13 @@ while (linha_atual < numero_linhas_arquivo):
         ##CARACTERE NÃO PERMITIDO NA LINGUAGEM
         else:
             if(caractere != '\n'): ## \n é permitido para quebra de linha
-                erro = Erro(linha_atual, posicao, caractere)
+                #caractere não é reconhecido pela linguagem, dessa forma é criado um 'falso' token identificador
+                palavra = 'identInvalido' 
+                token = Token(tipoToken.Ident, palavra) 
+                tokens.append(token)
+                erro = Erro(linha_atual, posicao, caractere, 2)
                 erros.append(erro)
-                posicao += 1 #deixa o ponteiro apontado para o pŕoximo caractere a ser lido
-                palavra += caractere
-                caractere = getCaractere(linha, posicao)
+                posicao = tratamentoErroLexico(palavra, posicao, linha)
             else:
                 posicao += 1 #deixa o ponteiro apontado para o pŕoximo caractere a ser lido
                 palavra += caractere
@@ -395,20 +411,12 @@ while (linha_atual < numero_linhas_arquivo):
     #o índice da linha lida é acrescido
     linha_atual = linha_atual + 1 
 
-print('TOKENS:')
-for token in tokens:
-     print(token.tipo)
-     print(token.lexema)
 
-print('ERROS')
-for erro in erros:
-    print(erro.linha)
-    print(erro.coluna)
-    print(erro.caractere)
-    print(erro.descricao)
+##Criando a tabela de símbolos
+tabela_de_simbolos = TabelaDeSimbolos(tokens)
 
 
 
-
-
-    
+print('TOKENS:', tokens)
+print('ERROS:', erros)
+print('TABELA DE SIMBOLOS', tabela_de_simbolos.tabela)    

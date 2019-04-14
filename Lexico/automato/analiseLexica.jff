@@ -184,54 +184,34 @@
 		</state>
 		<!--The list of transitions.-->
 		<transition>
-			<from>0</from>
-			<to>5</to>
-			<read>* </read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>11</to>
-			<read>&lt;</read>
-		</transition>
-		<transition>
-			<from>10</from>
-			<to>0</to>
-			<read>/</read>
-		</transition>
-		<transition>
 			<from>11</from>
 			<to>33</to>
 			<read>outro</read>
 		</transition>
 		<transition>
-			<from>0</from>
-			<to>32</to>
-			<read>;</read>
-		</transition>
-		<transition>
-			<from>17</from>
-			<to>12</to>
-			<read>=</read>
-		</transition>
-		<transition>
-			<from>1</from>
-			<to>2</to>
+			<from>3</from>
+			<to>4</to>
 			<read>outro</read>
 		</transition>
 		<transition>
-			<from>1</from>
-			<to>19</to>
-			<read>letra</read>
-		</transition>
-		<transition>
-			<from>1</from>
+			<from>6</from>
 			<to>7</to>
 			<read>.</read>
 		</transition>
 		<transition>
+			<from>6</from>
+			<to>2</to>
+			<read>outro</read>
+		</transition>
+		<transition>
 			<from>0</from>
-			<to>29</to>
-			<read>(</read>
+			<to>22</to>
+			<read>}</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>21</to>
+			<read>{</read>
 		</transition>
 		<transition>
 			<from>0</from>
@@ -240,172 +220,12 @@
 		</transition>
 		<transition>
 			<from>0</from>
-			<to>15</to>
-			<read>-</read>
-		</transition>
-		<transition>
-			<from>37</from>
-			<to>38</to>
-			<read>outro</read>
-		</transition>
-		<transition>
-			<from>8</from>
-			<to>19</to>
-			<read>letra</read>
-		</transition>
-		<transition>
-			<from>40</from>
-			<to>41</to>
-			<read>/</read>
-		</transition>
-		<transition>
-			<from>14</from>
-			<to>16</to>
-			<read>outro</read>
-		</transition>
-		<transition>
-			<from>37</from>
-			<to>37</to>
-			<read>letra</read>
-		</transition>
-		<transition>
-			<from>25</from>
-			<to>26</to>
-			<read>outro</read>
-		</transition>
-		<transition>
-			<from>25</from>
-			<to>27</to>
-			<read>=</read>
-		</transition>
-		<transition>
-			<from>3</from>
-			<to>6</to>
-			<read>digito</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>22</to>
-			<read>}</read>
-		</transition>
-		<transition>
-			<from>10</from>
-			<to>13</to>
-			<read>outro</read>
-		</transition>
-		<transition>
-			<from>42</from>
-			<to>40</to>
-			<read>*</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>30</to>
-			<read>)</read>
+			<to>5</to>
+			<read>* </read>
 		</transition>
 		<transition>
 			<from>8</from>
 			<to>9</to>
-			<read>outro</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>17</to>
-			<read>!</read>
-		</transition>
-		<transition>
-			<from>7</from>
-			<to>8</to>
-			<read>digito</read>
-		</transition>
-		<transition>
-			<from>6</from>
-			<to>2</to>
-			<read>outro</read>
-		</transition>
-		<transition>
-			<from>6</from>
-			<to>19</to>
-			<read>letra</read>
-		</transition>
-		<transition>
-			<from>10</from>
-			<to>42</to>
-			<read>*</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>21</to>
-			<read>{</read>
-		</transition>
-		<transition>
-			<from>17</from>
-			<to>19</to>
-			<read>outro</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>23</to>
-			<read>[</read>
-		</transition>
-		<transition>
-			<from>42</from>
-			<to>42</to>
-			<read>outro</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>37</to>
-			<read>letra</read>
-		</transition>
-		<transition>
-			<from>14</from>
-			<to>34</to>
-			<read>=</read>
-		</transition>
-		<transition>
-			<from>7</from>
-			<to>19</to>
-			<read>outro</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>24</to>
-			<read>]</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>31</to>
-			<read>,</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>3</to>
-			<read>+</read>
-		</transition>
-		<transition>
-			<from>40</from>
-			<to>19</to>
-			<read>outro</read>
-		</transition>
-		<transition>
-			<from>6</from>
-			<to>7</to>
-			<read>.</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>14</to>
-			<read>=</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>25</to>
-			<read>&gt;</read>
-		</transition>
-		<transition>
-			<from>3</from>
-			<to>4</to>
 			<read>outro</read>
 		</transition>
 		<transition>
@@ -414,14 +234,194 @@
 			<read>outro</read>
 		</transition>
 		<transition>
-			<from>15</from>
+			<from>17</from>
+			<to>19</to>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>14</from>
+			<to>34</to>
+			<read>=</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>25</to>
+			<read>&gt;</read>
+		</transition>
+		<transition>
+			<from>40</from>
+			<to>42</to>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>3</from>
 			<to>6</to>
 			<read>digito</read>
+		</transition>
+		<transition>
+			<from>37</from>
+			<to>37</to>
+			<read>letra</read>
+		</transition>
+		<transition>
+			<from>6</from>
+			<to>19</to>
+			<read>letra</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>15</to>
+			<read>-</read>
+		</transition>
+		<transition>
+			<from>7</from>
+			<to>8</to>
+			<read>digito</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>24</to>
+			<read>]</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>14</to>
+			<read>=</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>11</to>
+			<read>&lt;</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>19</to>
+			<read>letra</read>
+		</transition>
+		<transition>
+			<from>37</from>
+			<to>38</to>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>29</to>
+			<read>(</read>
 		</transition>
 		<transition>
 			<from>11</from>
 			<to>28</to>
 			<read>=</read>
+		</transition>
+		<transition>
+			<from>8</from>
+			<to>19</to>
+			<read>letra</read>
+		</transition>
+		<transition>
+			<from>10</from>
+			<to>0</to>
+			<read>/</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>30</to>
+			<read>)</read>
+		</transition>
+		<transition>
+			<from>14</from>
+			<to>16</to>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>25</from>
+			<to>26</to>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>31</to>
+			<read>,</read>
+		</transition>
+		<transition>
+			<from>42</from>
+			<to>40</to>
+			<read>/</read>
+		</transition>
+		<transition>
+			<from>17</from>
+			<to>12</to>
+			<read>=</read>
+		</transition>
+		<transition>
+			<from>42</from>
+			<to>42</to>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>37</to>
+			<read>letra</read>
+		</transition>
+		<transition>
+			<from>40</from>
+			<to>41</to>
+			<read>*</read>
+		</transition>
+		<transition>
+			<from>10</from>
+			<to>42</to>
+			<read>*</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>2</to>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>32</to>
+			<read>;</read>
+		</transition>
+		<transition>
+			<from>10</from>
+			<to>13</to>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>15</from>
+			<to>6</to>
+			<read>digito</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>7</to>
+			<read>.</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>17</to>
+			<read>!</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>23</to>
+			<read>[</read>
+		</transition>
+		<transition>
+			<from>25</from>
+			<to>27</to>
+			<read>=</read>
+		</transition>
+		<transition>
+			<from>7</from>
+			<to>19</to>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>3</to>
+			<read>+</read>
 		</transition>
 		<transition>
 			<from>1</from>
