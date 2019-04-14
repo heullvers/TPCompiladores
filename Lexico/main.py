@@ -30,7 +30,7 @@ while (linha_atual < numero_linhas_arquivo):
     voltando_de_comentario = False #retorna ao valor inicial, pois não está sendo feito mais a leitura de um comentário
     linha = info_arquivo[linha_atual]
 
-    while (posicao < len(linha) - 1):
+    while (posicao < len(linha) - 1): ##enquanto não ler a linha toda
         leitura_proximo = getNextCaractere(linha, posicao) #lê o primeiro caractere da palavra
         caractere = leitura_proximo['caractere'] #recebe o caractere
         posicao = leitura_proximo['posicao'] #recebe a posicao atual do ponteiro que está lendo o arquivo
@@ -74,13 +74,29 @@ while (linha_atual < numero_linhas_arquivo):
                         palavra += caractere
                         posicao += 1
                         caractere = getCaractere(linha, posicao)
-                    token = Token(tipoToken.NumFloat, palavra)
-                    tokens.append(token)
+                    if(isLetter(caractere, letras)):
+                        token = Token(tipoToken.NumFloat, palavra) 
+                        tokens.append(token)
+                        erro = Erro(linha_atual, posicao, caractere, 0)
+                        erros.append(erro)
+                        posicao = panicMode(palavra, posicao, linha)
+                    else:
+                        token = Token(tipoToken.NumFloat, palavra) 
+                        tokens.append(token)
                 else:
-                    erro = Erro(linha_atual, posicao, caractere)
+                    palavra = palavra[:-1] #remove o ponto
+                    token = Token(tipoToken.NumInt, palavra) 
+                    tokens.append(token)
+                    erro = Erro(linha_atual, posicao, caractere, 1)
                     erros.append(erro)
+                    posicao = panicMode(palavra, posicao, linha)
             else:
-                token = Token(tipoToken.NumInt, palavra)
+                if(isLetter(caractere, letras)):
+                    erro = Erro(linha_atual, posicao, caractere, 0)
+                    erros.append(erro)
+                    posicao = panicMode(palavra, posicao, linha)                    
+
+                token = Token(tipoToken.NumInt, palavra) 
                 tokens.append(token)
 
         ##VERIFICAR SE É OPERADOR RELACIONAL MENOR OU MENOR IGUAL
@@ -136,8 +152,14 @@ while (linha_atual < numero_linhas_arquivo):
                 tokens.append(token)
                 posicao += 1
             else:
-                erro = Erro(linha_atual, posicao, caractere)
+                # exclamação sozinho ou seguido de qualquer outro caractere que não seja '=', 
+                #não é reconhecido pela linguagem, dessa forma é criado um 'falso' token identificador
+                palavra = palavra.replace('!', 'identInvalido') 
+                token = Token(tipoToken.Ident, palavra) 
+                tokens.append(token)
+                erro = Erro(linha_atual, posicao, caractere, 2)
                 erros.append(erro)
+                posicao = panicMode(palavra, posicao, linha)
 
         ##VERIFICAR SE É OPERADOR ARITMÉTICO DE DIVISÃO OU COMENTÁRIO
         elif(caractere == '/'):
@@ -205,19 +227,35 @@ while (linha_atual < numero_linhas_arquivo):
                             palavra += caractere
                             posicao += 1
                             caractere = getCaractere(linha, posicao)
-                        token = Token(tipoToken.NumFloat, palavra)
-                        tokens.append(token)
+                        if(isLetter(caractere, letras)):
+                            token = Token(tipoToken.NumFloat, palavra) 
+                            tokens.append(token)
+                            erro = Erro(linha_atual, posicao, caractere, 0)
+                            erros.append(erro)
+                            posicao = panicMode(palavra, posicao, linha)
+                        else:
+                            token = Token(tipoToken.NumFloat, palavra) 
+                            tokens.append(token)
                     else:
-                        erro = Erro(linha_atual, posicao, caractere)
+                        palavra = palavra[:-1] #remove o ponto
+                        token = Token(tipoToken.NumInt, palavra) 
+                        tokens.append(token)
+                        erro = Erro(linha_atual, posicao, caractere, 1)
                         erros.append(erro)
+                        posicao = panicMode(palavra, posicao, linha)
+
                 else:
-                    token = Token(tipoToken.NumInt, palavra)
+                    if(isLetter(caractere, letras)):
+                        erro = Erro(linha_atual, posicao, caractere, 0)
+                        erros.append(erro)
+                        posicao = panicMode(palavra, posicao, linha)
+                    token = Token(tipoToken.NumInt, palavra) 
                     tokens.append(token)
             else:
                 token = Token(tipoToken.OpAritAdic, palavra)
                 tokens.append(token)
 
-            ##VERIFICAR SE É OPERADOR ARITMÉTICO DE SUBTRAÇÃO OU NÚMERO INTEIRO/FLUTUANTE COM SINAL NEGATIVO
+        ##VERIFICAR SE É OPERADOR ARITMÉTICO DE SUBTRAÇÃO OU NÚMERO INTEIRO/FLUTUANTE COM SINAL NEGATIVO
         elif(caractere == '-'):
             posicao += 1 #deixa o ponteiro apontado para o pŕoximo caractere a ser lido
             palavra += caractere
@@ -242,13 +280,28 @@ while (linha_atual < numero_linhas_arquivo):
                             palavra += caractere
                             posicao += 1
                             caractere = getCaractere(linha, posicao)
-                        token = Token(tipoToken.NumFloat, palavra)
-                        tokens.append(token)
+                        if(isLetter(caractere, letras)):
+                            token = Token(tipoToken.NumFloat, palavra) 
+                            tokens.append(token)
+                            erro = Erro(linha_atual, posicao, caractere, 0)
+                            erros.append(erro)
+                            posicao = panicMode(palavra, posicao, linha)
+                        else:
+                            token = Token(tipoToken.NumFloat, palavra) 
+                            tokens.append(token)
                     else:
-                        erro = Erro(linha_atual, posicao, caractere)
+                        palavra = palavra[:-1] #remove o ponto
+                        token = Token(tipoToken.NumInt, palavra) 
+                        tokens.append(token)
+                        erro = Erro(linha_atual, posicao, caractere, 1)
                         erros.append(erro)
+                        posicao = panicMode(palavra, posicao, linha)
                 else:
-                    token = Token(tipoToken.NumInt, palavra)
+                    if(isLetter(caractere, letras)):
+                        erro = Erro(linha_atual, posicao, caractere, 0)
+                        erros.append(erro)
+                        posicao = panicMode(palavra, posicao, linha)
+                    token = Token(tipoToken.NumInt, palavra) 
                     tokens.append(token)
             else:
                 token = Token(tipoToken.OpAritSub, palavra)
@@ -352,6 +405,8 @@ for erro in erros:
     print(erro.linha)
     print(erro.coluna)
     print(erro.caractere)
+    print(erro.descricao)
+
 
 
 

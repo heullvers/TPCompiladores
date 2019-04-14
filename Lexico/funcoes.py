@@ -45,3 +45,12 @@ def isReserved(identificador, reservadas): #verifica se o identificador encontra
         return reservadas[identificador]
     except:
         return False
+
+def panicMode(palavraAtual, posicao, linha): #ignora os caracteres identificados até finalizar a palavra
+    palavra = palavraAtual
+    caractere = linha[posicao]
+    while((caractere != ' ') and (posicao < len(linha) - 1)):
+        posicao += 1
+        caractere = linha[posicao]
+
+    return posicao
