@@ -1,58 +1,14 @@
-void maiordeminas(param1, param2){
-    int i=0;
+maiorD eminas;
+float 123456aa;
 
-    float var;
-    float cruzeiro;
-    float atletico;
-    
-    if(param1!=param2){
-        if(param1 <= param2){
-            var = param1;
-        }
-        else{
-            var = param2;
-        }
-    }
-    
-    while(var > i){
-        cruzeiro = cruzeiro + 10;
-        atletico = atletico - 10;
-        i = i + 1;
-    }
+123456a = 123.a;
 
-    if(atletico < cruzeiro){
-        return cruzeiro;
-    }
-    else{
-        return atletico;
-    }
+float numero = 145;
+
+if(numero ! 5){
+    numero = 0;
 }
 
-struct teste;
+int a = 3$a; 
 
-int lista = [2,3];
-
-float x = 10.0;
-int a = -1;
-
-float b;
-
-float c = +2.0;
-float d = -2.0;
-
-float numero;
-
-if(x >= a){ 
-    b = x * c; 
-}
-else{ 
-    b = x / d;
-}
-
-if(b == 20.0){ /* b = x * c */
-    numero = a + b;
-}
-else{ /* b = x / d*/
-    numero = a - b;
-}
-
+/* programa para verificar os erros léxicos 

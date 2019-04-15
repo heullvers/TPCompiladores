@@ -186,12 +186,7 @@ class AnaliseLexica(object):
                         posicao += 1
                     else:
                         # exclamação sozinho ou seguido de qualquer outro caractere que não seja '=', 
-                        #não é reconhecido pela linguagem, dessa forma é criado um 'falso' token identificador
-                        palavra = palavra.replace('!', 'identInvalido')
-                        if(getCaractere(linha, posicao - 1) == ' '): 
-                            token = Token(tipoToken.Ident, palavra, linha_atual, posicao, indiceTs) 
-                            indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
-                            self.tokens.append(token)
+                        #não é reconhecido pela linguagem
                         erro = Erro(linha_atual, posicao, '!', 4)
                         self.erros.append(erro)
                         posicao = tratamentoErroLexico(palavra, posicao, linha)
@@ -431,16 +426,11 @@ class AnaliseLexica(object):
                 ##CARACTERE NÃO PERMITIDO NA LINGUAGEM
                 else:
                     if(caractere != '\n'): ## \n é permitido para quebra de linha
-                        #caractere não é reconhecido pela linguagem, dessa forma é criado um 'falso' token identificador
-                        palavra = 'identInvalido' 
-                        if(getCaractere(linha, posicao - 1) == ' '): 
-                            token = Token(tipoToken.Ident, palavra, linha_atual, posicao, indiceTs) 
-                            indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
-                            self.tokens.append(token)
+                        #caractere não é reconhecido pela linguagem
                         erro = Erro(linha_atual, posicao, caractere, 2)
                         self.erros.append(erro)
                         posicao = tratamentoErroLexico(palavra, posicao, linha)
-                    else:
+                    else: #é igual a \n
                         posicao += 1 #deixa o ponteiro apontado para o pŕoximo caractere a ser lido
                         palavra += caractere
                         caractere = getCaractere(linha, posicao)
