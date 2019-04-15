@@ -6,9 +6,9 @@ class Token(object):
         self.lexema = lexema
         self.linha = linha + 1
         self.coluna = self.setColuna(lexema, coluna)
-        
         if(indiceTS is not None):
             self.indiceTs = indiceTS
+        self.imprimirToken()
 
     def setColuna(self, lexema, coluna):
         if(lexema != 'identInvalido'):
@@ -17,3 +17,6 @@ class Token(object):
             self.coluna = coluna
 
         return self.coluna
+
+    def imprimirToken(self):
+        print('Lexema:', self.lexema, ', Tipo:', self.tipo.name, ', Linha:' , self.linha, ' Posição: ', self.coluna)

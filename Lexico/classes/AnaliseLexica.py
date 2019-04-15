@@ -12,6 +12,7 @@ class AnaliseLexica(object):
         self.tokens = [] #array de objetos (Token)
         self.erros = [] #array de objetos (Erro)
         self.tabela_de_simbolos = None
+        self.analisar()
 
     def imprimirTokens(self):
         print('TOKENS:')
