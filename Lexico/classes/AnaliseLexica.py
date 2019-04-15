@@ -14,12 +14,12 @@ class AnaliseLexica(object):
         self.tabela_de_simbolos = None
 
     def imprimirTokens(self):
-        print('Tokens:')
+        print('TOKENS:')
         for token in self.tokens:
-            print('Lexema:', token.lexema, ', Tipo:', token.tipo.name)
+            print('Lexema:', token.lexema, ', Tipo:', token.tipo.name, ', Linha:' , token.linha, ' Posição: ', token.coluna)
     
     def imprimirErros(self):
-        print('Erros:')
+        print('ERROS:')
         if(len(self.erros) > 0):
             for erro in self.erros:
                 print('Linha:', erro.linha, ', Coluna:', erro.coluna, ', Caractere:', erro.caractere, ', Descrição:', erro.descricao)
@@ -27,7 +27,7 @@ class AnaliseLexica(object):
             print('Não foi encontrado erros léxicos')
 
     def imprimirTabelaDeSimbolos(self):
-        print('Tabela de símbolos:')
+        print('TABELA DE SÍMBOLOS:')
         for indice, simbolo in self.tabela_de_simbolos.tabela.items():
             print('Indice:', indice, ', Lexema:', simbolo.lexema)
 
@@ -35,7 +35,7 @@ class AnaliseLexica(object):
         info_arquivo = readFile(self.nome_arquivo) #cada elemento é uma linha do arquivo
         numero_linhas_arquivo = numberRows(info_arquivo) #número de linhas do arquivo
 
-        indiceTs = 0 #indice dos lexemas na tabela de símbolos
+        indiceTs = 0 #indice inicial dos lexemas na tabela de símbolos
 
         #linha e coluna inicial para inicializar a análise léxica do arquivo
         linha_atual = 0
@@ -44,7 +44,7 @@ class AnaliseLexica(object):
         #booleano que verifica se o comentário aberto, foi fechado
         voltando_de_comentario = False
 
-        while (linha_atual < numero_linhas_arquivo):
+        while (linha_atual < numero_linhas_arquivo): #enquanto não acabar as linhas do arquivo
             if(not voltando_de_comentario): #se não está voltando de um fechamento de comentário, inicia-se a leitura na posição 0
                 posicao = 0
             else:
@@ -70,10 +70,10 @@ class AnaliseLexica(object):
                         caractere = getCaractere(linha, posicao)
                     #verifica se o identificador é uma palavra reservada da linguagem
                     if(isReserved(palavra, reservadas)):
-                        token = Token(reservadas[palavra], palavra)
+                        token = Token(reservadas[palavra], palavra, linha_atual, posicao)
                         self.tokens.append(token)
                     else:
-                        token = Token(tipoToken.Ident, palavra, indiceTs)
+                        token = Token(tipoToken.Ident, palavra, linha_atual, posicao, indiceTs)
                         self.tokens.append(token)
                         indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
 
@@ -99,19 +99,19 @@ class AnaliseLexica(object):
                                 posicao += 1
                                 caractere = getCaractere(linha, posicao)
                             if(isLetter(caractere, letras)):
-                                token = Token(tipoToken.NumFloat, palavra, indiceTs)
+                                token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, indiceTs)
                                 self.tokens.append(token)
                                 indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                                 erro = Erro(linha_atual, posicao, caractere, 0)
                                 self.erros.append(erro)
                                 posicao = tratamentoErroLexico(palavra, posicao, linha)
                             else:
-                                token = Token(tipoToken.NumFloat, palavra, indiceTs)
+                                token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, indiceTs)
                                 self.tokens.append(token)
                                 indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                         else:
                             palavra = palavra[:-1] #remove o ponto
-                            token = Token(tipoToken.NumInt, palavra, indiceTs)
+                            token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, indiceTs)
                             self.tokens.append(token)
                             indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                             erro = Erro(linha_atual, posicao, caractere, 1)
@@ -123,7 +123,7 @@ class AnaliseLexica(object):
                             self.erros.append(erro)
                             posicao = tratamentoErroLexico(palavra, posicao, linha)                    
 
-                        token = Token(tipoToken.NumInt, palavra, indiceTs)
+                        token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, indiceTs)
                         self.tokens.append(token)
                         indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
 
@@ -134,11 +134,11 @@ class AnaliseLexica(object):
                     caractere = getCaractere(linha, posicao)
                     if(caractere == '='):
                         palavra += caractere
-                        token = Token(tipoToken.OpRelMenorIgual, palavra)
+                        token = Token(tipoToken.OpRelMenorIgual, palavra, linha_atual, posicao)
                         self.tokens.append(token)
                         posicao += 1
                     else:
-                        token = Token(tipoToken.OpRelMenor, palavra)
+                        token = Token(tipoToken.OpRelMenor, palavra, linha_atual, posicao)
                         self.tokens.append(token)
                 
                 ##VERIFICAR SE É OPERADOR RELACIONAL MAIOR OU MAIOR IGUAL
@@ -148,11 +148,11 @@ class AnaliseLexica(object):
                     caractere = getCaractere(linha, posicao)
                     if(caractere == '='):
                         palavra += caractere
-                        token = Token(tipoToken.OpRelMaiorIgual, palavra)
+                        token = Token(tipoToken.OpRelMaiorIgual, palavra, linha_atual, posicao)
                         self.tokens.append(token)
                         posicao += 1
                     else:
-                        token = Token(tipoToken.OpRelMaior, palavra)
+                        token = Token(tipoToken.OpRelMaior, palavra, linha_atual, posicao)
                         self.tokens.append(token)
 
                 ##VERIFICAR SE É OPERADOR RELACIONAL DE IGUALDADE OU ATRIBUIÇÃO
@@ -162,11 +162,11 @@ class AnaliseLexica(object):
                     caractere = getCaractere(linha, posicao)
                     if(caractere == '='):
                         palavra += caractere
-                        token = Token(tipoToken.OpRelIgual, palavra)
+                        token = Token(tipoToken.OpRelIgual, palavra, linha_atual, posicao)
                         self.tokens.append(token)
                         posicao += 1
                     else:
-                        token = Token(tipoToken.OpAtribuicao, palavra)
+                        token = Token(tipoToken.OpAtribuicao, palavra, linha_atual, posicao)
                         self.tokens.append(token)
 
                 ##VERIFICAR SE É OPERADOR DE DIFERENTE
@@ -176,14 +176,14 @@ class AnaliseLexica(object):
                     caractere = getCaractere(linha, posicao)
                     if(caractere == '='):
                         palavra += caractere
-                        token = Token(tipoToken.OpRelDif, palavra)
+                        token = Token(tipoToken.OpRelDif, palavra, linha_atual, posicao)
                         self.tokens.append(token)
                         posicao += 1
                     else:
                         # exclamação sozinho ou seguido de qualquer outro caractere que não seja '=', 
                         #não é reconhecido pela linguagem, dessa forma é criado um 'falso' token identificador
                         palavra = palavra.replace('!', 'identInvalido') 
-                        token = Token(tipoToken.Ident, palavra, indiceTs) 
+                        token = Token(tipoToken.Ident, palavra, linha_atual, posicao, indiceTs) 
                         indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                         self.tokens.append(token)
                         erro = Erro(linha_atual, posicao, caractere, 2)
@@ -203,7 +203,7 @@ class AnaliseLexica(object):
                             if(caractere == '\n'): #é a última posição da linha, vai precisar ir pra linha de baixo
                                 linha_atual = linha_atual + 1
                                 if(linha_atual == numberRows(info_arquivo)): ##acabou o arquivo e o comentário não foi fechado
-                                    erro = Erro(linha_atual, 0, caractere)
+                                    erro = Erro(linha_atual, 0, ' ', 3)
                                     self.erros.append(erro)
                                     break
                                 else:
@@ -228,7 +228,7 @@ class AnaliseLexica(object):
                             caractere = getCaractere(linha, posicao)
                             
                     else:
-                        token = Token(tipoToken.OpAritDiv, palavra)
+                        token = Token(tipoToken.OpAritDiv, palavra, linha_atual, posicao)
                         self.tokens.append(token)
 
                 ##VERIFICAR SE É OPERADOR ARITMÉTICO DE ADIÇÃO OU NÚMERO INTEIRO/FLUTUANTE COM SINAL POSITIVO
@@ -257,19 +257,19 @@ class AnaliseLexica(object):
                                     posicao += 1
                                     caractere = getCaractere(linha, posicao)
                                 if(isLetter(caractere, letras)):
-                                    token = Token(tipoToken.NumFloat, palavra, indiceTs)
+                                    token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, indiceTs)
                                     self.tokens.append(token)
                                     indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                                     erro = Erro(linha_atual, posicao, caractere, 0)
                                     self.erros.append(erro)
                                     posicao = tratamentoErroLexico(palavra, posicao, linha)
                                 else:
-                                    token = Token(tipoToken.NumFloat, palavra, indiceTs)
+                                    token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, indiceTs)
                                     self.tokens.append(token)
                                     indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                             else:
                                 palavra = palavra[:-1] #remove o ponto
-                                token = Token(tipoToken.NumInt, palavra, indiceTs)
+                                token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, indiceTs)
                                 self.tokens.append(token)
                                 indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                                 erro = Erro(linha_atual, posicao, caractere, 1)
@@ -281,11 +281,11 @@ class AnaliseLexica(object):
                                 erro = Erro(linha_atual, posicao, caractere, 0)
                                 self.erros.append(erro)
                                 posicao = tratamentoErroLexico(palavra, posicao, linha)
-                            token = Token(tipoToken.NumInt, palavra, indiceTs)
+                            token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, indiceTs)
                             self.tokens.append(token)
                             indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                     else:
-                        token = Token(tipoToken.OpAritAdic, palavra)
+                        token = Token(tipoToken.OpAritAdic, palavra, linha_atual, posicao)
                         self.tokens.append(token)
 
                 ##VERIFICAR SE É OPERADOR ARITMÉTICO DE SUBTRAÇÃO OU NÚMERO INTEIRO/FLUTUANTE COM SINAL NEGATIVO
@@ -314,19 +314,19 @@ class AnaliseLexica(object):
                                     posicao += 1
                                     caractere = getCaractere(linha, posicao)
                                 if(isLetter(caractere, letras)):
-                                    token = Token(tipoToken.NumFloat, palavra, indiceTs)
+                                    token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, indiceTs)
                                     self.tokens.append(token)
                                     indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                                     erro = Erro(linha_atual, posicao, caractere, 0)
                                     self.erros.append(erro)
                                     posicao = tratamentoErroLexico(palavra, posicao, linha)
                                 else:
-                                    token = Token(tipoToken.NumFloat, palavra, indiceTs)
+                                    token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, indiceTs)
                                     self.tokens.append(token)
                                     indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                             else:
                                 palavra = palavra[:-1] #remove o ponto
-                                token = Token(tipoToken.NumInt, palavra, indiceTs)
+                                token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, indiceTs)
                                 self.tokens.append(token)
                                 indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                                 erro = Erro(linha_atual, posicao, caractere, 1)
@@ -337,11 +337,11 @@ class AnaliseLexica(object):
                                 erro = Erro(linha_atual, posicao, caractere, 0)
                                 self.erros.append(erro)
                                 posicao = tratamentoErroLexico(palavra, posicao, linha)
-                            token = Token(tipoToken.NumInt, palavra, indiceTs)
+                            token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, indiceTs)
                             self.tokens.append(token)
                             indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                     else:
-                        token = Token(tipoToken.OpAritSub, palavra)
+                        token = Token(tipoToken.OpAritSub, palavra, linha_atual, posicao)
                         self.tokens.append(token)
 
                 ##VERIFICAR SE É OPERADOR ARITMÉTICO DE MULTIPLICAÇÃO
@@ -349,7 +349,7 @@ class AnaliseLexica(object):
                     posicao += 1 #deixa o ponteiro apontado para o pŕoximo caractere a ser lido
                     palavra += caractere
                     caractere = getCaractere(linha, posicao)
-                    token = Token(tipoToken.OpAritMult, palavra)
+                    token = Token(tipoToken.OpAritMult, palavra, linha_atual, posicao)
                     self.tokens.append(token)
 
                 ##VERIFICAR SE É ABRE CHAVES
@@ -357,7 +357,7 @@ class AnaliseLexica(object):
                     posicao += 1 #deixa o ponteiro apontado para o pŕoximo caractere a ser lido
                     palavra += caractere
                     caractere = getCaractere(linha, posicao)
-                    token = Token(tipoToken.AbreChave, palavra)
+                    token = Token(tipoToken.AbreChave, palavra, linha_atual, posicao)
                     self.tokens.append(token)
 
                 ##VERIFICAR SE É FECHA CHAVES
@@ -365,7 +365,7 @@ class AnaliseLexica(object):
                     posicao += 1 #deixa o ponteiro apontado para o pŕoximo caractere a ser lido
                     palavra += caractere
                     caractere = getCaractere(linha, posicao)
-                    token = Token(tipoToken.FechaChave, palavra)
+                    token = Token(tipoToken.FechaChave, palavra, linha_atual, posicao)
                     self.tokens.append(token)
 
                 ##VERIFICAR SE É ABRE COLCHETE
@@ -373,7 +373,7 @@ class AnaliseLexica(object):
                     posicao += 1 #deixa o ponteiro apontado para o pŕoximo caractere a ser lido
                     palavra += caractere
                     caractere = getCaractere(linha, posicao)
-                    token = Token(tipoToken.AbreColchete, palavra)
+                    token = Token(tipoToken.AbreColchete, palavra, linha_atual, posicao)
                     self.tokens.append(token)
 
                 ##VERIFICAR SE É FECHA COLCHETE
@@ -381,7 +381,7 @@ class AnaliseLexica(object):
                     posicao += 1 #deixa o ponteiro apontado para o pŕoximo caractere a ser lido
                     palavra += caractere
                     caractere = getCaractere(linha, posicao)
-                    token = Token(tipoToken.FechaColchete, palavra)
+                    token = Token(tipoToken.FechaColchete, palavra, linha_atual, posicao)
                     self.tokens.append(token)
 
                 ##VERIFICAR SE É ABRE PARENTESES
@@ -389,7 +389,7 @@ class AnaliseLexica(object):
                     posicao += 1 #deixa o ponteiro apontado para o pŕoximo caractere a ser lido
                     palavra += caractere
                     caractere = getCaractere(linha, posicao)
-                    token = Token(tipoToken.AbreParenteses, palavra)
+                    token = Token(tipoToken.AbreParenteses, palavra, linha_atual, posicao)
                     self.tokens.append(token)
 
                 ##VERIFICAR SE É FECHA PARENTESES
@@ -397,7 +397,7 @@ class AnaliseLexica(object):
                     posicao += 1 #deixa o ponteiro apontado para o pŕoximo caractere a ser lido
                     palavra += caractere
                     caractere = getCaractere(linha, posicao)
-                    token = Token(tipoToken.FechaParenteses, palavra)
+                    token = Token(tipoToken.FechaParenteses, palavra, linha_atual, posicao)
                     self.tokens.append(token)
 
                 ##VERIFICAR SE É SEPARADOR
@@ -405,7 +405,7 @@ class AnaliseLexica(object):
                     posicao += 1 #deixa o ponteiro apontado para o pŕoximo caractere a ser lido
                     palavra += caractere
                     caractere = getCaractere(linha, posicao)
-                    token = Token(tipoToken.Separador, palavra)
+                    token = Token(tipoToken.Separador, palavra, linha_atual, posicao)
                     self.tokens.append(token)
 
                 ##VERIFICAR SE É DELIMITADOR
@@ -413,7 +413,7 @@ class AnaliseLexica(object):
                     posicao += 1 #deixa o ponteiro apontado para o pŕoximo caractere a ser lido
                     palavra += caractere
                     caractere = getCaractere(linha, posicao)
-                    token = Token(tipoToken.Delimitador, palavra)
+                    token = Token(tipoToken.Delimitador, palavra, linha_atual, posicao)
                     self.tokens.append(token)
                 
                 ##CARACTERE NÃO PERMITIDO NA LINGUAGEM
@@ -421,7 +421,7 @@ class AnaliseLexica(object):
                     if(caractere != '\n'): ## \n é permitido para quebra de linha
                         #caractere não é reconhecido pela linguagem, dessa forma é criado um 'falso' token identificador
                         palavra = 'identInvalido' 
-                        token = Token(tipoToken.Ident, palavra, indiceTs) 
+                        token = Token(tipoToken.Ident, palavra, linha_atual, posicao, indiceTs) 
                         indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                         self.tokens.append(token)
                         erro = Erro(linha_atual, posicao, caractere, 2)

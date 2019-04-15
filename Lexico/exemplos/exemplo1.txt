@@ -7,10 +7,10 @@ if (2.5 > 2.4){ print(eh verdade)}
 
 i*/f7 (2 == 5){
     teste123 = 123;
-    if(7 > 4){
+    if(7 >  4)  {   
         teste456 = 137;
     }
-a5 a #%
+a5 a #% /*
 34 a
 
 

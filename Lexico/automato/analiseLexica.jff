@@ -7,12 +7,12 @@
 			<y>576.0</y>
 		</state>
 		<state id="1" name="q1">
-			<x>1299.0</x>
-			<y>296.0</y>
+			<x>1330.0</x>
+			<y>293.0</y>
 		</state>
 		<state id="2" name="NumInt">
-			<x>1716.0</x>
-			<y>303.0</y>
+			<x>1537.0</x>
+			<y>398.0</y>
 			<final/>
 		</state>
 		<state id="3" name="q3">
@@ -20,8 +20,8 @@
 			<y>396.0</y>
 		</state>
 		<state id="4" name="opAritAdic">
-			<x>1660.0</x>
-			<y>609.0</y>
+			<x>1474.0</x>
+			<y>490.0</y>
 			<final/>
 		</state>
 		<state id="5" name="OpAritMult">
@@ -30,20 +30,20 @@
 			<final/>
 		</state>
 		<state id="6" name="q6">
-			<x>1648.0</x>
-			<y>442.0</y>
+			<x>1809.0</x>
+			<y>537.0</y>
 		</state>
 		<state id="7" name="q7">
-			<x>1696.0</x>
-			<y>557.0</y>
+			<x>1836.0</x>
+			<y>310.0</y>
 		</state>
 		<state id="8" name="q8">
-			<x>1817.0</x>
-			<y>494.0</y>
+			<x>1818.0</x>
+			<y>138.0</y>
 		</state>
 		<state id="9" name="NumFloat">
-			<x>1909.0</x>
-			<y>389.0</y>
+			<x>1925.0</x>
+			<y>394.0</y>
 			<final/>
 		</state>
 		<state id="10" name="q39">
@@ -55,8 +55,8 @@
 			<y>616.0</y>
 		</state>
 		<state id="12" name="OpRelDif">
-			<x>1724.0</x>
-			<y>869.0</y>
+			<x>1695.0</x>
+			<y>1041.0</y>
 			<final/>
 		</state>
 		<state id="13" name="OpAritDiv">
@@ -78,8 +78,8 @@
 			<final/>
 		</state>
 		<state id="17" name="q17">
-			<x>1297.0</x>
-			<y>932.0</y>
+			<x>1158.0</x>
+			<y>828.0</y>
 		</state>
 		<state id="18" name="OpAritSub">
 			<x>1603.0</x>
@@ -87,28 +87,28 @@
 			<final/>
 		</state>
 		<state id="19" name="ERRO">
-			<x>1259.0</x>
-			<y>121.0</y>
+			<x>1212.0</x>
+			<y>96.0</y>
 			<final/>
 		</state>
 		<state id="21" name="abre-chave">
-			<x>1293.0</x>
-			<y>1014.0</y>
+			<x>1259.0</x>
+			<y>1035.0</y>
 			<final/>
 		</state>
 		<state id="22" name="fecha-chave">
-			<x>1281.0</x>
-			<y>1090.0</y>
+			<x>1247.0</x>
+			<y>1111.0</y>
 			<final/>
 		</state>
 		<state id="23" name="abre-colchete">
-			<x>1263.0</x>
-			<y>1182.0</y>
+			<x>1229.0</x>
+			<y>1203.0</y>
 			<final/>
 		</state>
 		<state id="24" name="fecha-colchete">
-			<x>1250.0</x>
-			<y>1277.0</y>
+			<x>1216.0</x>
+			<y>1298.0</y>
 			<final/>
 		</state>
 		<state id="25" name="q25">
@@ -116,43 +116,43 @@
 			<y>683.0</y>
 		</state>
 		<state id="26" name="OpRelMaior">
-			<x>1342.0</x>
-			<y>764.0</y>
+			<x>1357.0</x>
+			<y>766.0</y>
 			<final/>
 		</state>
 		<state id="27" name="OpRelMaiorIgual">
-			<x>1397.0</x>
-			<y>713.0</y>
+			<x>1414.0</x>
+			<y>723.0</y>
 			<final/>
 		</state>
 		<state id="28" name="OpRelMenorIgual">
-			<x>1416.0</x>
-			<y>603.0</y>
+			<x>1477.0</x>
+			<y>632.0</y>
 			<final/>
 		</state>
 		<state id="29" name="abre-parenteses">
-			<x>1237.0</x>
-			<y>1376.0</y>
+			<x>1203.0</x>
+			<y>1397.0</y>
 			<final/>
 		</state>
 		<state id="30" name="fecha-parenteses">
-			<x>1211.0</x>
-			<y>1482.0</y>
+			<x>1177.0</x>
+			<y>1503.0</y>
 			<final/>
 		</state>
 		<state id="31" name="separador">
-			<x>1167.0</x>
-			<y>1560.0</y>
+			<x>1133.0</x>
+			<y>1581.0</y>
 			<final/>
 		</state>
 		<state id="32" name="delimitador">
-			<x>1126.0</x>
-			<y>1609.0</y>
+			<x>1092.0</x>
+			<y>1630.0</y>
 			<final/>
 		</state>
 		<state id="33" name="OpRelMenor">
-			<x>1420.0</x>
-			<y>649.0</y>
+			<x>1479.0</x>
+			<y>696.0</y>
 			<final/>
 		</state>
 		<state id="34" name="OpRelIgual">
@@ -184,24 +184,9 @@
 		</state>
 		<!--The list of transitions.-->
 		<transition>
-			<from>11</from>
-			<to>33</to>
-			<read>outro</read>
-		</transition>
-		<transition>
-			<from>3</from>
-			<to>4</to>
-			<read>outro</read>
-		</transition>
-		<transition>
-			<from>6</from>
-			<to>7</to>
-			<read>.</read>
-		</transition>
-		<transition>
-			<from>6</from>
-			<to>2</to>
-			<read>outro</read>
+			<from>0</from>
+			<to>32</to>
+			<read>;</read>
 		</transition>
 		<transition>
 			<from>0</from>
@@ -209,153 +194,8 @@
 			<read>}</read>
 		</transition>
 		<transition>
-			<from>0</from>
-			<to>21</to>
-			<read>{</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>1</to>
-			<read>digito</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>5</to>
-			<read>* </read>
-		</transition>
-		<transition>
-			<from>8</from>
-			<to>9</to>
-			<read>outro</read>
-		</transition>
-		<transition>
-			<from>15</from>
-			<to>18</to>
-			<read>outro</read>
-		</transition>
-		<transition>
-			<from>17</from>
-			<to>19</to>
-			<read>outro</read>
-		</transition>
-		<transition>
-			<from>14</from>
-			<to>34</to>
-			<read>=</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>25</to>
-			<read>&gt;</read>
-		</transition>
-		<transition>
-			<from>40</from>
-			<to>42</to>
-			<read>outro</read>
-		</transition>
-		<transition>
-			<from>3</from>
-			<to>6</to>
-			<read>digito</read>
-		</transition>
-		<transition>
-			<from>37</from>
-			<to>37</to>
-			<read>letra</read>
-		</transition>
-		<transition>
-			<from>6</from>
-			<to>19</to>
-			<read>letra</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>15</to>
-			<read>-</read>
-		</transition>
-		<transition>
-			<from>7</from>
-			<to>8</to>
-			<read>digito</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>24</to>
-			<read>]</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>14</to>
-			<read>=</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>11</to>
-			<read>&lt;</read>
-		</transition>
-		<transition>
-			<from>1</from>
-			<to>19</to>
-			<read>letra</read>
-		</transition>
-		<transition>
-			<from>37</from>
-			<to>38</to>
-			<read>outro</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>29</to>
-			<read>(</read>
-		</transition>
-		<transition>
-			<from>11</from>
-			<to>28</to>
-			<read>=</read>
-		</transition>
-		<transition>
-			<from>8</from>
-			<to>19</to>
-			<read>letra</read>
-		</transition>
-		<transition>
-			<from>10</from>
-			<to>0</to>
-			<read>/</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>30</to>
-			<read>)</read>
-		</transition>
-		<transition>
-			<from>14</from>
-			<to>16</to>
-			<read>outro</read>
-		</transition>
-		<transition>
 			<from>25</from>
 			<to>26</to>
-			<read>outro</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>31</to>
-			<read>,</read>
-		</transition>
-		<transition>
-			<from>42</from>
-			<to>40</to>
-			<read>/</read>
-		</transition>
-		<transition>
-			<from>17</from>
-			<to>12</to>
-			<read>=</read>
-		</transition>
-		<transition>
-			<from>42</from>
-			<to>42</to>
 			<read>outro</read>
 		</transition>
 		<transition>
@@ -369,32 +209,32 @@
 			<read>*</read>
 		</transition>
 		<transition>
-			<from>10</from>
-			<to>42</to>
-			<read>*</read>
-		</transition>
-		<transition>
-			<from>1</from>
-			<to>2</to>
-			<read>outro</read>
+			<from>42</from>
+			<to>40</to>
+			<read>/</read>
 		</transition>
 		<transition>
 			<from>0</from>
-			<to>32</to>
-			<read>;</read>
+			<to>24</to>
+			<read>]</read>
 		</transition>
 		<transition>
-			<from>10</from>
-			<to>13</to>
-			<read>outro</read>
+			<from>25</from>
+			<to>27</to>
+			<read>=</read>
 		</transition>
 		<transition>
-			<from>15</from>
-			<to>6</to>
-			<read>digito</read>
+			<from>0</from>
+			<to>25</to>
+			<read>&gt;</read>
 		</transition>
 		<transition>
-			<from>1</from>
+			<from>17</from>
+			<to>12</to>
+			<read>=</read>
+		</transition>
+		<transition>
+			<from>6</from>
 			<to>7</to>
 			<read>.</read>
 		</transition>
@@ -405,13 +245,43 @@
 		</transition>
 		<transition>
 			<from>0</from>
-			<to>23</to>
-			<read>[</read>
+			<to>3</to>
+			<read>+</read>
 		</transition>
 		<transition>
-			<from>25</from>
-			<to>27</to>
+			<from>0</from>
+			<to>14</to>
 			<read>=</read>
+		</transition>
+		<transition>
+			<from>8</from>
+			<to>9</to>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>3</from>
+			<to>6</to>
+			<read>digito</read>
+		</transition>
+		<transition>
+			<from>37</from>
+			<to>37</to>
+			<read>letra</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>11</to>
+			<read>&lt;</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>29</to>
+			<read>(</read>
+		</transition>
+		<transition>
+			<from>15</from>
+			<to>18</to>
+			<read>outro</read>
 		</transition>
 		<transition>
 			<from>7</from>
@@ -419,9 +289,134 @@
 			<read>outro</read>
 		</transition>
 		<transition>
+			<from>10</from>
+			<to>42</to>
+			<read>*</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>2</to>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>19</to>
+			<read>letra</read>
+		</transition>
+		<transition>
+			<from>10</from>
+			<to>13</to>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>6</from>
+			<to>2</to>
+			<read>outro</read>
+		</transition>
+		<transition>
 			<from>0</from>
-			<to>3</to>
-			<read>+</read>
+			<to>31</to>
+			<read>,</read>
+		</transition>
+		<transition>
+			<from>11</from>
+			<to>28</to>
+			<read>=</read>
+		</transition>
+		<transition>
+			<from>10</from>
+			<to>0</to>
+			<read>/</read>
+		</transition>
+		<transition>
+			<from>6</from>
+			<to>19</to>
+			<read>letra</read>
+		</transition>
+		<transition>
+			<from>3</from>
+			<to>4</to>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>8</from>
+			<to>19</to>
+			<read>letra</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>7</to>
+			<read>.</read>
+		</transition>
+		<transition>
+			<from>42</from>
+			<to>42</to>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>23</to>
+			<read>[</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>1</to>
+			<read>digito</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>21</to>
+			<read>{</read>
+		</transition>
+		<transition>
+			<from>40</from>
+			<to>42</to>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>37</from>
+			<to>38</to>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>11</from>
+			<to>33</to>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>7</from>
+			<to>8</to>
+			<read>digito</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>5</to>
+			<read>* </read>
+		</transition>
+		<transition>
+			<from>17</from>
+			<to>19</to>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>14</from>
+			<to>16</to>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>15</to>
+			<read>-</read>
+		</transition>
+		<transition>
+			<from>15</from>
+			<to>6</to>
+			<read>digito</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>30</to>
+			<read>)</read>
 		</transition>
 		<transition>
 			<from>1</from>
@@ -442,6 +437,11 @@
 			<from>37</from>
 			<to>37</to>
 			<read>digito</read>
+		</transition>
+		<transition>
+			<from>14</from>
+			<to>34</to>
+			<read>=</read>
 		</transition>
 	</automaton>
 </structure>
