@@ -33,8 +33,12 @@ class AnaliseLexica(object):
             print('Indice:', indice, ', Lexema:', simbolo.lexema)
 
     def analisar(self):
+
         info_arquivo = readFile(self.nome_arquivo) #cada elemento é uma linha do arquivo
         numero_linhas_arquivo = numberRows(info_arquivo) #número de linhas do arquivo
+
+        print('INFORMACOES ARQUIVO', info_arquivo)
+        print('NUMERO LINHAS', numero_linhas_arquivo)
 
         indiceTs = 0 #indice inicial dos lexemas na tabela de símbolos
 
@@ -183,11 +187,12 @@ class AnaliseLexica(object):
                     else:
                         # exclamação sozinho ou seguido de qualquer outro caractere que não seja '=', 
                         #não é reconhecido pela linguagem, dessa forma é criado um 'falso' token identificador
-                        palavra = palavra.replace('!', 'identInvalido') 
-                        token = Token(tipoToken.Ident, palavra, linha_atual, posicao, indiceTs) 
-                        indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
-                        self.tokens.append(token)
-                        erro = Erro(linha_atual, posicao, caractere, 2)
+                        palavra = palavra.replace('!', 'identInvalido')
+                        if(getCaractere(linha, posicao - 1) == ' '): 
+                            token = Token(tipoToken.Ident, palavra, linha_atual, posicao, indiceTs) 
+                            indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
+                            self.tokens.append(token)
+                        erro = Erro(linha_atual, posicao, '!', 4)
                         self.erros.append(erro)
                         posicao = tratamentoErroLexico(palavra, posicao, linha)
 
@@ -200,33 +205,39 @@ class AnaliseLexica(object):
                         posicao += 1 #deixa o ponteiro apontado para o pŕoximo caractere a ser lido
                         palavra += caractere
                         caractere = getCaractere(linha, posicao)
-                        while(caractere != '/'): #O que está entre /* *\ será descartado
-                            if(caractere == '\n'): #é a última posição da linha, vai precisar ir pra linha de baixo
-                                linha_atual = linha_atual + 1
-                                if(linha_atual == numberRows(info_arquivo)): ##acabou o arquivo e o comentário não foi fechado
-                                    erro = Erro(linha_atual, 0, ' ', 3)
-                                    self.erros.append(erro)
-                                    break
-                                else:
-                                    posicao = 0
-                                    linha = info_arquivo[linha_atual]
+                        alertaFalso = True
+                        while((alertaFalso) and (linha_atual < numberRows(info_arquivo))):
+                            alertaFalso = False #avisa que foi encontrado um /, mas não há um asterisco anteriormente para o comentário ser fechado
+                            while(caractere != '/'): #O que está entre /* *\ será descartado
+                                alertaFalso = False
+                                if(caractere == '\n'): #é a última posição da linha, vai precisar ir pra linha de baixo
+                                    linha_atual = linha_atual + 1
+                                    if(linha_atual == numberRows(info_arquivo)): ##acabou o arquivo e o comentário não foi fechado
+                                        erro = Erro(linha_atual, 0, ' ', 3)
+                                        self.erros.append(erro)
+                                        break
+                                    else:
+                                        posicao = 0
+                                        print('LINHA ATUAL', linha_atual)
+                                        linha = info_arquivo[linha_atual]
+                                        leitura_proximo = getNextCaractere(linha, posicao)
+                                        caractere = leitura_proximo['caractere'] #recebe o caractere
+                                        posicao = leitura_proximo['posicao'] #recebe a posicao atual do ponteiro que está lendo o arquivo
+                                else: #ainda não foi identificado o / para haver a possibilidade de finalizar o comentário e não está no final da linha
+                                    posicao += 1
                                     leitura_proximo = getNextCaractere(linha, posicao)
                                     caractere = leitura_proximo['caractere'] #recebe o caractere
                                     posicao = leitura_proximo['posicao'] #recebe a posicao atual do ponteiro que está lendo o arquivo
-                            else: #ainda não foi identificado o / para haver a possibilidade de finalizar o comentário e não está no final da linha
-                                posicao += 1
-                                leitura_proximo = getNextCaractere(linha, posicao)
-                                caractere = leitura_proximo['caractere'] #recebe o caractere
-                                posicao = leitura_proximo['posicao'] #recebe a posicao atual do ponteiro que está lendo o arquivo
-                        #foi encontrado um /
-                        caractere = getCaractere(linha, posicao - 1) 
-                        posicao += 1 
-                        #verifica se o caractere anterior ao / é um * para fechar o comentário
-                        if(caractere == '*'):
-                            caractere = getCaractere(linha, posicao)
-                            voltando_de_comentario = True #necessário para manter a posição de leitura da linha do arquivo
-                        else:
-                            caractere = getCaractere(linha, posicao)
+                            #foi encontrado um /
+                            caractere = getCaractere(linha, posicao - 1) 
+                            posicao += 1 
+                            #verifica se o caractere anterior ao / é um * para fechar o comentário
+                            if(caractere == '*'):
+                                caractere = getCaractere(linha, posicao)
+                                voltando_de_comentario = True #necessário para manter a posição de leitura da linha do arquivo
+                            else:
+                                caractere = getCaractere(linha, posicao)
+                                alertaFalso = True
                             
                     else:
                         token = Token(tipoToken.OpAritDiv, palavra, linha_atual, posicao)
@@ -422,9 +433,10 @@ class AnaliseLexica(object):
                     if(caractere != '\n'): ## \n é permitido para quebra de linha
                         #caractere não é reconhecido pela linguagem, dessa forma é criado um 'falso' token identificador
                         palavra = 'identInvalido' 
-                        token = Token(tipoToken.Ident, palavra, linha_atual, posicao, indiceTs) 
-                        indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
-                        self.tokens.append(token)
+                        if(getCaractere(linha, posicao - 1) == ' '): 
+                            token = Token(tipoToken.Ident, palavra, linha_atual, posicao, indiceTs) 
+                            indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
+                            self.tokens.append(token)
                         erro = Erro(linha_atual, posicao, caractere, 2)
                         self.erros.append(erro)
                         posicao = tratamentoErroLexico(palavra, posicao, linha)

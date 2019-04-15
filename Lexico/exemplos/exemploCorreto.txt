@@ -1,0 +1,14 @@
+maiorDeinas;
+float 123456aa;
+
+123456a = 123.a;
+
+float numero = 145;
+
+if(numero ! 5){
+    numero = 0;
+}
+
+int a = 3$a; 
+
+/* programa para verificar os erros léxicos 

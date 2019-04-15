@@ -15,6 +15,8 @@ class Erro(object):
             self.descricao = "Caractere não pertence a linguagem"
         elif(descricao == 3):
             self.descricao = "Comentário não foi fechado"
+        elif(descricao == 4):
+            self.descricao = "Exclamação não é reconhecido pela linguagem. Talvez você quis dizer !="
 
         return self.descricao
         

@@ -6,6 +6,6 @@ nome_arquivo = 'exemplos/' + nome_arquivo #nome do arquivo
 anLex = AnaliseLexica(nome_arquivo)
 
 #anLex.imprimirTokens()
-#anLex.imprimirErros()
-#anLex.imprimirTabelaDeSimbolos()
+anLex.imprimirErros()
+anLex.imprimirTabelaDeSimbolos()
 

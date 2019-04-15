@@ -9,6 +9,5 @@ letras = {'a': True, 'b': True, 'c': True, 'd': True, 'e': True, 'f': True, 'g':
 digitos = {0: True, 1: True, 2: True, 3: True, 4: True, 5: True, 6: True, 7: True, 8: True, 9: True}
 
 #palavras reservadas da linguagem
-reservadas = {'int': tipoToken.PRInt, 'float': tipoToken.PRFloat,
- 'char': tipoToken.PRChar, 'struct': tipoToken.PRStruct, 'if': tipoToken.PRIf,
-  'else': tipoToken.PRElse, 'while': tipoToken.PRWhile, 'void': tipoToken.PRVoid, 'return': tipoToken.PRReturn}
+reservadas = {'int': tipoToken.PRInt, 'float': tipoToken.PRFloat, 'struct': tipoToken.PRStruct, 'if': tipoToken.PRIf,
+    'else': tipoToken.PRElse, 'while': tipoToken.PRWhile, 'void': tipoToken.PRVoid, 'return': tipoToken.PRReturn}
