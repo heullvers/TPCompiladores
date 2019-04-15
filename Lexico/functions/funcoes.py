@@ -54,3 +54,7 @@ def tratamentoErroLexico(palavraAtual, posicao, linha): #ignora os caracteres id
         caractere = linha[posicao]
 
     return posicao
+
+def avancaPonteiro(posicao):
+    posicao += 1
+    return posicao

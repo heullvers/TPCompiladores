@@ -1,4 +1,4 @@
-from EnumTipoToken import *
+from classes.EnumTipoToken import *
 
 #letras permitidas na linguagem
 letras = {'a': True, 'b': True, 'c': True, 'd': True, 'e': True, 'f': True, 'g': True, 'h': True, 'i': True, 'j': True, 'k': True,

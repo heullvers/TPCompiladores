@@ -8,11 +8,12 @@ class Erro(object):
 
     def setDescricao(self,descricao):
         if(descricao == 0):
-            descricao = "Letra após digito"
+            self.descricao = "Letra após digito"
         elif(descricao == 1):
-            descricao = "Caractere inválido após ponto de separação do número flutuante"
+            self.descricao = "Caractere inválido após ponto de separação do número flutuante"
         elif(descricao == 2):
-            descricao = "Caractere não pertence a linguagem"
+            self.descricao = "Caractere não pertence a linguagem"
+        return self.descricao
         
         
         

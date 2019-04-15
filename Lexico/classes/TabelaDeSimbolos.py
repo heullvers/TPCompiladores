@@ -1,4 +1,4 @@
-from Simbolo import *
+from classes.Simbolo import *
 class TabelaDeSimbolos(object):
 
     def __init__(self, tokens):
