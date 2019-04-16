@@ -3,7 +3,7 @@ from classes.Token import *
 from classes.Caracteres import *
 from classes.Erro import *
 from functions.funcoes import *
-from classes.teste import *
+from classes.Simbolo import *
 
 class AnaliseLexica(object):
 
@@ -15,7 +15,9 @@ class AnaliseLexica(object):
         self.indiceTs = 0 #indice inicial dos lexemas na tabela de símbolos
         self.analisar()
 
-    def adicionarSimboloaTS(self, lexema):
+    #adiciona identificador, número inteiro e flutuante a tabela de símbolos.
+    #Se o valor já estiver cadastrado, não é adicionado a tabela de símbolos, apenas criado o token 
+    def adicionarSimboloaTS(self, lexema): 
         jaExiste = False
         key = False
         for simbolo in self.tabela_de_simbolos.values():
@@ -146,7 +148,7 @@ class AnaliseLexica(object):
                                     token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, aux_indice_ts)
                                 self.tokens.append(token)
                         else:
-                            palavra = palavra[:-1] #remove o ponto
+                            palavra = palavra[:-1] #remove o ponto para criar o token numInt, mas é gerado um erro posteriormente
                             aux_indice_ts = self.adicionarSimboloaTS(palavra)
 
                             if(aux_indice_ts is False):
@@ -508,7 +510,3 @@ class AnaliseLexica(object):
             
             #o índice da linha lida é acrescido
             linha_atual = linha_atual + 1 
-
-
-        ##Criando a tabela de símbolos
-        #self.tabela_de_simbolos = TabelaDeSimbolos(self.tokens)

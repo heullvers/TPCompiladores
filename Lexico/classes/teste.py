@@ -1,6 +1,0 @@
-from classes.Simbolo import *
-    
-
-
-        
-        
