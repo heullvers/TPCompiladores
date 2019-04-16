@@ -3,7 +3,7 @@ from classes.Token import *
 from classes.Caracteres import *
 from classes.Erro import *
 from functions.funcoes import *
-from classes.TabelaDeSimbolos import *
+from classes.teste import *
 
 class AnaliseLexica(object):
 
@@ -11,13 +11,37 @@ class AnaliseLexica(object):
         self.nome_arquivo = nome_arquivo #nome do arquivo
         self.tokens = [] #array de objetos (Token)
         self.erros = [] #array de objetos (Erro)
-        self.tabela_de_simbolos = None
+        self.tabela_de_simbolos = {}
+        self.indiceTs = 0 #indice inicial dos lexemas na tabela de símbolos
         self.analisar()
+
+    def adicionarSimboloaTS(self, lexema):
+        jaExiste = False
+        key = False
+        for simbolo in self.tabela_de_simbolos.values():
+            if(simbolo.lexema == lexema):
+                valor = simbolo
+                jaExiste = True
+                for chave in self.tabela_de_simbolos:
+                    if(self.tabela_de_simbolos[chave] == valor):
+                        key = chave
+                break
+
+        if(not jaExiste):
+            self.tabela_de_simbolos[self.indiceTs] = Simbolo(lexema, self.indiceTs) #cria-se um novo símbolo se não existe o valor na hash
+
+        return key
+        
+    def incrementarIndiceTS(self):
+        self.indiceTs = self.indiceTs + 1
+
+    def getTabelaSimbolos(self):
+        return self.tabela_de_simbolos
 
     def imprimirTokens(self):
         print('TOKENS:')
         for token in self.tokens:
-            print('Lexema:', token.lexema, ', Tipo:', token.tipo.name, ', Linha:' , token.linha, ' Posição: ', token.coluna)
+            print('Lexema:', token.lexema, ', Tipo:', token.tipo.name, ', Linha:' , token.linha, ' Coluna: ', token.coluna, ' Indice: ', token.indiceTs)
     
     def imprimirErros(self):
         print('ERROS:')
@@ -29,18 +53,13 @@ class AnaliseLexica(object):
 
     def imprimirTabelaDeSimbolos(self):
         print('TABELA DE SÍMBOLOS:')
-        for indice, simbolo in self.tabela_de_simbolos.tabela.items():
+        for indice, simbolo in self.tabela_de_simbolos.items():
             print('Indice:', indice, ', Lexema:', simbolo.lexema)
 
     def analisar(self):
 
         info_arquivo = readFile(self.nome_arquivo) #cada elemento é uma linha do arquivo
         numero_linhas_arquivo = numberRows(info_arquivo) #número de linhas do arquivo
-
-        print('INFORMACOES ARQUIVO', info_arquivo)
-        print('NUMERO LINHAS', numero_linhas_arquivo)
-
-        indiceTs = 0 #indice inicial dos lexemas na tabela de símbolos
 
         #linha e coluna inicial para inicializar a análise léxica do arquivo
         linha_atual = 0
@@ -78,9 +97,13 @@ class AnaliseLexica(object):
                         token = Token(reservadas[palavra], palavra, linha_atual, posicao)
                         self.tokens.append(token)
                     else:
-                        token = Token(tipoToken.Ident, palavra, linha_atual, posicao, indiceTs)
+                        aux_indice_ts = self.adicionarSimboloaTS(palavra)
+                        if(aux_indice_ts is False):
+                            token = Token(tipoToken.Ident, palavra, linha_atual, posicao, self.indiceTs)
+                            self.incrementarIndiceTS()
+                        else:
+                            token = Token(tipoToken.Ident, palavra, linha_atual, posicao, aux_indice_ts)
                         self.tokens.append(token)
-                        indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
 
                 ### VERIFICAR SE É UM NÚMERO INTEIRO/FLUTUANTE (SEM SINAL)
                 elif(isDigit(caractere,digitos)): #palavra iniciada com DIGITO
@@ -104,33 +127,50 @@ class AnaliseLexica(object):
                                 posicao += 1
                                 caractere = getCaractere(linha, posicao)
                             if(isLetter(caractere, letras)):
-                                token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, indiceTs)
+                                aux_indice_ts = self.adicionarSimboloaTS(palavra)
+                                if(aux_indice_ts is False):
+                                    token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, self.indiceTs)
+                                    self.incrementarIndiceTS()
+                                else:
+                                    token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, aux_indice_ts)
                                 self.tokens.append(token)
-                                indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                                 erro = Erro(linha_atual, posicao, caractere, 0)
                                 self.erros.append(erro)
                                 posicao = tratamentoErroLexico(palavra, posicao, linha)
                             else:
-                                token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, indiceTs)
+                                aux_indice_ts = self.adicionarSimboloaTS(palavra)
+                                if(aux_indice_ts is False):
+                                    token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, self.indiceTs)
+                                    self.incrementarIndiceTS()
+                                else:
+                                    token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, aux_indice_ts)
                                 self.tokens.append(token)
-                                indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                         else:
                             palavra = palavra[:-1] #remove o ponto
-                            token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, indiceTs)
+                            aux_indice_ts = self.adicionarSimboloaTS(palavra)
+
+                            if(aux_indice_ts is False):
+                                token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, self.indiceTs)
+                                self.incrementarIndiceTS()
+                            else:
+                                token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, aux_indice_ts)
                             self.tokens.append(token)
-                            indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                             erro = Erro(linha_atual, posicao, caractere, 1)
                             self.erros.append(erro)
                             posicao = tratamentoErroLexico(palavra, posicao, linha)
-                    else:
+                    else:                  
+                        aux_indice_ts = self.adicionarSimboloaTS(palavra)
+                        if(aux_indice_ts is False):
+                            token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, self.indiceTs)
+                            self.incrementarIndiceTS()
+                        else:
+                            token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, aux_indice_ts)
+                        self.tokens.append(token)
+
                         if(isLetter(caractere, letras)):
                             erro = Erro(linha_atual, posicao, caractere, 0)
                             self.erros.append(erro)
-                            posicao = tratamentoErroLexico(palavra, posicao, linha)                    
-
-                        token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, indiceTs)
-                        self.tokens.append(token)
-                        indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
+                            posicao = tratamentoErroLexico(palavra, posicao, linha)  
 
                 ##VERIFICAR SE É OPERADOR RELACIONAL MENOR OU MENOR IGUAL
                 elif(caractere == '<'):
@@ -213,7 +253,6 @@ class AnaliseLexica(object):
                                         break
                                     else:
                                         posicao = 0
-                                        print('LINHA ATUAL', linha_atual)
                                         linha = info_arquivo[linha_atual]
                                         leitura_proximo = getNextCaractere(linha, posicao)
                                         caractere = leitura_proximo['caractere'] #recebe o caractere
@@ -264,21 +303,33 @@ class AnaliseLexica(object):
                                     posicao += 1
                                     caractere = getCaractere(linha, posicao)
                                 if(isLetter(caractere, letras)):
-                                    token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, indiceTs)
+                                    aux_indice_ts = self.adicionarSimboloaTS(palavra)
+                                    if(aux_indice_ts is False):
+                                        token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, self.indiceTs)
+                                        self.incrementarIndiceTS()
+                                    else:
+                                        token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, aux_indice_ts)
                                     self.tokens.append(token)
-                                    indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                                     erro = Erro(linha_atual, posicao, caractere, 0)
                                     self.erros.append(erro)
                                     posicao = tratamentoErroLexico(palavra, posicao, linha)
                                 else:
-                                    token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, indiceTs)
+                                    aux_indice_ts = self.adicionarSimboloaTS(palavra)
+                                    if(aux_indice_ts is False):
+                                        token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, self.indiceTs)
+                                        self.incrementarIndiceTS()
+                                    else:
+                                        token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, aux_indice_ts)
                                     self.tokens.append(token)
-                                    indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                             else:
                                 palavra = palavra[:-1] #remove o ponto
-                                token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, indiceTs)
+                                aux_indice_ts = self.adicionarSimboloaTS(palavra)
+                                if(aux_indice_ts is False):
+                                    token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, self.indiceTs)
+                                    self.incrementarIndiceTS()
+                                else:
+                                    token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, aux_indice_ts)
                                 self.tokens.append(token)
-                                indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                                 erro = Erro(linha_atual, posicao, caractere, 1)
                                 self.erros.append(erro)
                                 posicao = tratamentoErroLexico(palavra, posicao, linha)
@@ -288,9 +339,13 @@ class AnaliseLexica(object):
                                 erro = Erro(linha_atual, posicao, caractere, 0)
                                 self.erros.append(erro)
                                 posicao = tratamentoErroLexico(palavra, posicao, linha)
-                            token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, indiceTs)
+                            aux_indice_ts = self.adicionarSimboloaTS(palavra)
+                            if(aux_indice_ts is False):
+                                token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, self.indiceTs)
+                                self.incrementarIndiceTS()
+                            else:
+                                token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, aux_indice_ts)
                             self.tokens.append(token)
-                            indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                     else:
                         token = Token(tipoToken.OpAritAdic, palavra, linha_atual, posicao)
                         self.tokens.append(token)
@@ -321,21 +376,33 @@ class AnaliseLexica(object):
                                     posicao += 1
                                     caractere = getCaractere(linha, posicao)
                                 if(isLetter(caractere, letras)):
-                                    token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, indiceTs)
+                                    aux_indice_ts = self.adicionarSimboloaTS(palavra)
+                                    if(aux_indice_ts is False):
+                                        token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, self.indiceTs)
+                                        self.incrementarIndiceTS()
+                                    else:
+                                        token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, aux_indice_ts)
                                     self.tokens.append(token)
-                                    indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                                     erro = Erro(linha_atual, posicao, caractere, 0)
                                     self.erros.append(erro)
                                     posicao = tratamentoErroLexico(palavra, posicao, linha)
                                 else:
-                                    token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, indiceTs)
+                                    aux_indice_ts = self.adicionarSimboloaTS(palavra)
+                                    if(aux_indice_ts is False):
+                                        token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, self.indiceTs)
+                                        self.incrementarIndiceTS()
+                                    else:
+                                        token = Token(tipoToken.NumFloat, palavra, linha_atual, posicao, aux_indice_ts)
                                     self.tokens.append(token)
-                                    indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                             else:
                                 palavra = palavra[:-1] #remove o ponto
-                                token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, indiceTs)
+                                aux_indice_ts = self.adicionarSimboloaTS(palavra)
+                                if(aux_indice_ts is False):
+                                    token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, self.indiceTs)
+                                    self.incrementarIndiceTS()
+                                else:
+                                    token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, aux_indice_ts)
                                 self.tokens.append(token)
-                                indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                                 erro = Erro(linha_atual, posicao, caractere, 1)
                                 self.erros.append(erro)
                                 posicao = tratamentoErroLexico(palavra, posicao, linha)
@@ -344,9 +411,13 @@ class AnaliseLexica(object):
                                 erro = Erro(linha_atual, posicao, caractere, 0)
                                 self.erros.append(erro)
                                 posicao = tratamentoErroLexico(palavra, posicao, linha)
-                            token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, indiceTs)
+                            aux_indice_ts = self.adicionarSimboloaTS(palavra)
+                            if(aux_indice_ts is False):
+                                token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, self.indiceTs)
+                                self.incrementarIndiceTS()
+                            else:
+                                token = Token(tipoToken.NumInt, palavra, linha_atual, posicao, aux_indice_ts)
                             self.tokens.append(token)
-                            indiceTs += 1 #acrescenta 1 ao índice da tabela de símbolos
                     else:
                         token = Token(tipoToken.OpAritSub, palavra, linha_atual, posicao)
                         self.tokens.append(token)
@@ -440,4 +511,4 @@ class AnaliseLexica(object):
 
 
         ##Criando a tabela de símbolos
-        self.tabela_de_simbolos = TabelaDeSimbolos(self.tokens)
+        #self.tabela_de_simbolos = TabelaDeSimbolos(self.tokens)

@@ -9,3 +9,7 @@ anLex = AnaliseLexica(nome_arquivo)
 anLex.imprimirErros()
 anLex.imprimirTabelaDeSimbolos()
 
+
+
+
+

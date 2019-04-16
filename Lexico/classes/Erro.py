@@ -2,7 +2,7 @@ class Erro(object):
 
     def __init__(self, linha, coluna, caractere, descricao = None):
         self.linha = linha + 1
-        self.coluna = coluna
+        self.coluna = coluna + 1
         self.caractere = caractere
         self.descricao = self.setDescricao(descricao)
 
