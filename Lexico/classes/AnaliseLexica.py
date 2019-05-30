@@ -1,9 +1,9 @@
 
-from classes.Token import *
-from classes.Caracteres import *
-from classes.Erro import *
-from functions.funcoes import *
-from classes.Simbolo import *
+from Lexico.classes.Token import *
+from Lexico.classes.Caracteres import *
+from Lexico.classes.Erro import *
+from Lexico.functions.funcoes import *
+from Lexico.classes.Simbolo import *
 
 class AnaliseLexica(object):
 

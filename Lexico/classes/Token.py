@@ -8,7 +8,8 @@ class Token(object):
         self.coluna = coluna - len(lexema) + 1
         if(indiceTS is not None):
             self.indiceTs = indiceTS
-        self.imprimirToken()
+        #self.imprimirToken()
 
     def imprimirToken(self):
         print('Lexema:', self.lexema, ', Tipo:', self.tipo.name, ', Linha:' , self.linha, ' Coluna: ', self.coluna, ' Indice:', self.indiceTs)
+        print(type(self.lexema))
