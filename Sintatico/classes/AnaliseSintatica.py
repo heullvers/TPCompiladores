@@ -2,6 +2,7 @@ class AnaliseSintatica:
     def __init__(self, tokens):
         print('sinatico')
         self.arrayTokens = tokens
+        self.qntTokens = len(self.arrayTokens)
         self.posicao = 0
         self.programa()
 
@@ -9,29 +10,45 @@ class AnaliseSintatica:
         self.posicao += 1
 
     def match(self, esperado):
-        if(esperado == self.arrayTokens[self.posicao].lexema):
-            self.setPosicao()
-            print('deu match')
-            return True
-        else:
-            self.setPosicao()
-            print('nao deu match')
-            return False
+        print('chamei match')
+        print('esperado', esperado)
+        if(self.posicao < self.qntTokens):
+            if(esperado == self.arrayTokens[self.posicao].lexema):
+                self.setPosicao()
+                print('deu match')
+                return True
+        print('nao deu match')
+        return False
     
     def proximo(self):
-        return self.arrayTokens[self.posicao + 1].lexema
+        print('tamanho', len(self.arrayTokens))
+        print('posicao', self.posicao)
+        if(self.posicao < self.qntTokens):
+            return self.arrayTokens[self.posicao].lexema
     
     def programa(self):
         print('chamei programa')
-        self.declaracao_lista()
-        print('voltei programa')
+        print('programa', self.declaracao_lista())
 
     def declaracao_lista(self):
         print('chamei declaracao_lista')
-        self.declaracao()
-        print('voltei declaracao_lista')
+        if(not self.declaracao()):
+            tudoCerto = False
+            return tudoCerto
+        else:
+            tudoCerto = True
+        
+        print('terminei primeira declaracao')
+        print(self.proximo())
+        
+        while(self.declaracao() and (self.posicao < self.qntTokens)):
+            tudoCerto = True
+
+        print('declaracoes realizadas')
+        return tudoCerto
 
     def declaracao(self):
+        print('chamei declaracao')
         if(self.var_declaracao()):
             print('var_declaracao tudo certo')
             tudoCerto = True
@@ -47,6 +64,7 @@ class AnaliseSintatica:
         return tudoCerto
 
     def var_declaracao(self):
+        print('chamei var_declaracao')
         tudoCerto = True
         if(not self.tipo_especificador()):
             print('erro sintatico var_declaracao 1')
@@ -58,7 +76,8 @@ class AnaliseSintatica:
             tudoCerto = False
             return tudoCerto
         print('var_declaracao correto 2')
-        if(proximo() == ';'):
+        if(self.proximo() == ';'):
+            print('entrei')
             self.match(';')
             print('var_declaracao correto 3')
         elif(self.abre_colchete()):
@@ -83,7 +102,9 @@ class AnaliseSintatica:
         return tudoCerto
 
     def tipo_especificador(self):
+        print('chamei tipo especificador')
         tudoCerto = True
+        print('proximo', self.proximo())
         if(self.proximo() == 'int'):
             self.match('int')
             print('tipo_especificador correto 1')
@@ -93,7 +114,7 @@ class AnaliseSintatica:
         elif(self.proximo() == 'void'):
             self.match('void')
             print('tipo_especificador correto 3')
-        elif(self.proximo() == 'struct):
+        elif(self.proximo() == 'struct'):
             self.match('struct')
             print('tipo_especificador struct')
             if(not self.ident()):
@@ -123,6 +144,7 @@ class AnaliseSintatica:
         return self.var_declaracao()
 
     def fun_declaracao(self):
+        print('chamei fun_declaracao')
         tudoCerto = True
         if(not self.tipo_especificador()):
             tudoCerto = False
@@ -378,7 +400,7 @@ class AnaliseSintatica:
             tudoCerto = False
             return tudoCerto
 
-    return tudoCerto
+        return tudoCerto
 
     def var(self):
         tudoCerto = True
@@ -564,7 +586,7 @@ class AnaliseSintatica:
 
     def args(self):
         #opcional
-        self.arg_lista():
+        self.arg_lista()
         return True
 
     def arg_lista(self):
@@ -637,7 +659,7 @@ class AnaliseSintatica:
         else:
             print('erro sintatico oficial num')
             tudoCerto = False
-    return tudoCerto
+        return tudoCerto
 
 
     def num_int(self):
@@ -652,129 +674,52 @@ class AnaliseSintatica:
         return tudoCerto
 
     
-    def digito(self):
+    def digito(self, digito):
+        print('chamei digito')
         tudoCerto = True
-        if(self.proximo() == '0'):
-            self.match('0')
-        elif(self.proximo() == '1'):
-            self.match('1')
-        elif(self.proximo() == '2'):
-            self.match('2')
-        elif(self.proximo() == '3'):
-            self.match('3')
-        elif(self.proximo() == '4'):
-            self.match('4')
-        elif(self.proximo() == '5'):
-            self.match('5')
-        elif(self.proximo() == '6'):
-            self.match('6')
-        elif(self.proximo() == '7'):
-            self.match('7')
-        elif(self.proximo() == '8'):
-            self.match('8')
-        elif(self.proximo() == '9'):
-            self.match('9')
-        else:
+        digitos = ['0','1','2','3','4','5','6','7','8','9']
+        if digito not in digitos:
+            print('erro sintatico oficial digito')
             tudoCerto = False
-        
+            return tudoCerto
+            
+        print('tudo certo digito')
         return tudoCerto
 
     def ident(self):
+        print('chamei ident')
         tudoCerto = True
-        if(self.letra()):
+
+        print('proximo', self.proximo())
+        print('tipo', type(self.proximo()))
+        caracteres = list(self.proximo())
+        contador = 0
+        print('caracteres', caracteres)
+        if(self.letra(caracteres[contador])):
             print('tudo certo ident 1')
-            while((self.letra()) or (self.digito())):
+            contador += 1
+            while(((self.letra(caracteres[contador])) or (self.digito(caracteres[contador]))) and (contador < len(caracteres) - 1)):
+                contador += 1
                 print('tudo certo ident 2')
                 tudoCerto = True
         else:
             print('erro sintatico oficial ident')
             tudoCerto = False
 
-    
-    def digito(self):
-        tudoCerto = True
-        if(self.proximo() == 'a'):
-            self.match('a')
-            print('tudo certo digito 1')
-        elif(self.proximo() == 'b'):
-            self.match('b')
-            print('tudo certo digito 2')
-        elif(self.proximo() == 'c'):
-            self.match('c')
-            print('tudo certo digito 3')
-        elif(self.proximo() == 'd'):
-            self.match('d')
-            print('tudo certo digito 4')
-        elif(self.proximo() == 'e'):
-            self.match('e')
-            print('tudo certo digito 5')
-        elif(self.proximo() == 'f'):
-            self.match('f')
-            print('tudo certo digito 6')
-        elif(self.proximo() == 'g'):
-            self.match('g')
-            print('tudo certo digito 7')
-        elif(self.proximo() == 'h'):
-            self.match('h')
-            print('tudo certo digito 8')
-        elif(self.proximo() == 'i'):
-            self.match('i')
-            print('tudo certo digito 9')
-        elif(self.proximo() == 'j'):
-            self.match('j')
-            print('tudo certo digito 10')
-        elif(self.proximo() == 'k'):
-            self.match('k')
-            print('tudo certo digito 11')
-        elif(self.proximo() == 'l'):
-            self.match('l')
-            print('tudo certo digito 12')
-        elif(self.proximo() == 'm'):
-            self.match('m')
-            print('tudo certo digito 13')
-        elif(self.proximo() == 'n'):
-            self.match('n')
-            print('tudo certo digito 14')
-        elif(self.proximo() == 'o'):
-            self.match('o')
-            print('tudo certo digito 15')
-        elif(self.proximo() == 'p'):
-            self.match('p')
-            print('tudo certo digito 16')
-        elif(self.proximo() == 'q'):
-            self.match('q')
-            print('tudo certo digito 17')
-        elif(self.proximo() == 'r'):
-            self.match('r')
-            print('tudo certo digito 18')
-        elif(self.proximo() == 's'):
-            self.match('s')
-            print('tudo certo digito 19')
-        elif(self.proximo() == 't'):
-            self.match('t')
-            print('tudo certo digito 20')
-        elif(self.proximo() == 'u'):
-            self.match('u')
-            print('tudo certo digito 21')
-        elif(self.proximo() == 'v'):
-            self.match('v')
-            print('tudo certo digito 22')
-        elif(self.proximo() == 'w'):
-            self.match('w')
-            print('tudo certo digito 23')
-        elif(self.proximo() == 'x'):
-            self.match('x')
-            print('tudo certo digito 24')
-        elif(self.proximo() == 'y'):
-            self.match('y')
-            print('tudo certo digito 25')
-        elif(self.proximo() == 'z'):
-            self.match('z')
-            print('tudo certo digito 26')
-        else:
-            tudoCerto = False
-            print('erro sintatico oficial digito')
+        print('tudo certo ident')
+        self.setPosicao() #match do identificador
+        return tudoCerto
 
+    
+    def letra(self, caractere):
+        tudoCerto = True
+        letras = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+        print('caractere', caractere)
+        if caractere not in letras:
+            tudoCerto = False
+            print('erro sintatico oficial letra')
+            return tudoCerto
+        print('tudo certo letra')
         return tudoCerto
         
     def abre_chave(self):

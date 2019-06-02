@@ -6,10 +6,11 @@ nome_arquivo = 'exemplos/' + nome_arquivo #nome do arquivo
 
 anLex = AnaliseLexica(nome_arquivo)
 
+anLex.imprimirTokens()
 anSint = AnaliseSintatica(anLex.tokens)
 
 
-#anLex.imprimirTokens()
+
 #anLex.imprimirErros()
 #anLex.imprimirTabelaDeSimbolos()
 
