@@ -5,7 +5,7 @@ class Token(object):
         self.tipo = nome
         self.lexema = lexema
         self.linha = linha + 1
-        self.coluna = coluna - len(lexema) + 1
+        self.coluna = coluna + 1
         if(indiceTS is not None):
             self.indiceTs = indiceTS
         #self.imprimirToken()

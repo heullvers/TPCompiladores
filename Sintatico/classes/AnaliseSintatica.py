@@ -1,13 +1,41 @@
+from Sintatico.classes.Erro import *
 class AnaliseSintatica:
     def __init__(self, tokens):
         print('sinatico')
         self.arrayTokens = tokens
         self.qntTokens = len(self.arrayTokens)
         self.posicao = 0
+        self.erros = []
+        self.tokensPorLinha = self.calculaQntTokensPorLinha()
         self.programa()
+        self.imprimirErros()
+        print(self.tokensPorLinha)
 
+    def calculaQntTokensPorLinha(self):
+        linhaAtual = 1
+        i = 0
+        qntTokensLinha = 0
+        arrayTokensPorLinha = []
+        for token in self.arrayTokens:
+            if(token.linha == linhaAtual):
+                qntTokensLinha += 1
+            else:
+                linhaAtual += 1
+                arrayTokensPorLinha.append(qntTokensLinha)
+                qntTokensLinha = 1
+            
+            #ultimo token analisado
+            i += 1
+            if(i == self.qntTokens):
+                arrayTokensPorLinha.append(qntTokensLinha)
+
+        return arrayTokensPorLinha
+            
     def setPosicao(self):
         self.posicao += 1
+
+    def backPosicao(self, posicoes):
+        self.posicao = self.posicao - posicoes
 
     def match(self, esperado):
         print('chamei match')
@@ -25,6 +53,17 @@ class AnaliseSintatica:
         print('posicao', self.posicao)
         if(self.posicao < self.qntTokens):
             return self.arrayTokens[self.posicao].lexema
+
+    def retornaLinhaToken(self):
+        return self.arrayTokens[self.posicao - 1].linha
+
+    def imprimirErros(self):
+        print('ERROS:')
+        if(len(self.erros) > 0):
+            for erro in self.erros:
+                print('Linha:', erro.linha, 'Descrição:', erro.descricao)
+        else:
+            print('Não foi encontrado erros sintáticos')
     
     def programa(self):
         print('chamei programa')
@@ -33,6 +72,9 @@ class AnaliseSintatica:
     def declaracao_lista(self):
         print('chamei declaracao_lista')
         if(not self.declaracao()):
+            print('erro sintatico oficial declaracao_lista 1')
+            erro = Erro(self.retornaLinhaToken(), 0)
+            self.erros.append(erro)
             tudoCerto = False
             return tudoCerto
         else:
@@ -40,10 +82,17 @@ class AnaliseSintatica:
         
         print('terminei primeira declaracao')
         print(self.proximo())
-        
-        while(self.declaracao() and (self.posicao < self.qntTokens)):
-            tudoCerto = True
-
+        '''
+        while((self.posicao < self.qntTokens)):
+            if(self.declaracao()):
+                tudoCerto = True
+            else:
+                tudoCerto = False
+                print('erro sintatico oficial declaracao_lista 2')
+                erro = Erro(self.retornaLinhaToken(), 0)
+                self.erros.append(erro)
+                return tudoCerto
+'''
         print('declaracoes realizadas')
         return tudoCerto
 
@@ -57,6 +106,8 @@ class AnaliseSintatica:
             tudoCerto = True
         else:
             tudoCerto = False
+            erro = Erro(self.retornaLinhaToken(), 1)
+            self.erros.append(erro)
             print('erro sintatico oficial declaracao')
             return tudoCerto
 
@@ -65,16 +116,19 @@ class AnaliseSintatica:
 
     def var_declaracao(self):
         print('chamei var_declaracao')
+        voltarPosicao = 0
         tudoCerto = True
         if(not self.tipo_especificador()):
             print('erro sintatico var_declaracao 1')
             tudoCerto = False
             return tudoCerto
+        voltarPosicao += 1
         print('var_declaracao correto 1')
         if(not self.ident()):
             print('erro sintatico var_declaracao 2')
             tudoCerto = False
             return tudoCerto
+        voltarPosicao += 1
         print('var_declaracao correto 2')
         if(self.proximo() == ';'):
             print('entrei')
@@ -94,6 +148,7 @@ class AnaliseSintatica:
                 tudoCerto = False
                 return tudoCerto
         else:
+            self.backPosicao(voltarPosicao)
             print('erro sintatico oficial var_declaracao')
             tudoCerto = False
             return tudoCerto
@@ -104,6 +159,7 @@ class AnaliseSintatica:
     def tipo_especificador(self):
         print('chamei tipo especificador')
         tudoCerto = True
+        voltarPosicao = 0
         print('proximo', self.proximo())
         if(self.proximo() == 'int'):
             self.match('int')
@@ -115,22 +171,30 @@ class AnaliseSintatica:
             self.match('void')
             print('tipo_especificador correto 3')
         elif(self.proximo() == 'struct'):
+            voltarPosicao += 1
             self.match('struct')
             print('tipo_especificador struct')
             if(not self.ident()):
                 print('erro sintatico tipo_especificador 1')
+                self.backPosicao(voltarPosicao)
                 tudoCerto = False
                 return tudoCerto
+            voltarPosicao += 1
             if(not self.abre_chave()):
                 print('erro sintatico tipo_especificador 2')
+                self.backPosicao(voltarPosicao)
                 tudoCerto = False
                 return tudoCerto
+            voltarPosicao += 1
             if(not self.atributos_declaracao()):
                 print('erro sintatico tipo_especificador 3')
+                self.backPosicao(voltarPosicao)
                 tudoCerto = False
                 return tudoCerto
+            voltarPosicao += 1
             if(not self.fecha_chave()):
                 print('erro sintatico tipo_especificador 4')
+                self.backPosicao(voltarPosicao)
                 tudoCerto = False
                 return tudoCerto
         else:
@@ -664,13 +728,21 @@ class AnaliseSintatica:
 
     def num_int(self):
         tudoCerto = True
-        if(self.digito()):
-            while(self.digito()):
+        digitos = list(self.proximo())
+        print('tamanho digitos', len(digitos))
+        contador = 0
+        if(self.digito(digitos[contador])):
+            contador += 1
+            print('contador', contador)
+            while((contador < len(digitos) - 1) and (self.digito(digitos[contador]))):
                 tudoCerto = True
+                contador += 1
         else:
+            print('erro oficial num_int')
             tudoCerto = False
-            return False
 
+        self.setPosicao() #match do num_int
+        print('tudo certo num_int')
         return tudoCerto
 
     
