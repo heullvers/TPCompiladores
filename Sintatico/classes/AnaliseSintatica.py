@@ -579,6 +579,7 @@ class AnaliseSintatica:
     def var(self):
         print('CHAMEI var')
         tudoCerto = True
+        voltarPosicao = 0
         if(self.ident()):
             print('tudo certo var 1')
         else:
@@ -586,12 +587,17 @@ class AnaliseSintatica:
             tudoCerto = False
             return tudoCerto
 
-        if(self.abre_colchete()):
+        
+        while(self.abre_colchete()):
+            voltarPosicao += 1
             if(not self.expressao()):
+                self.backPosicao(voltarPosicao)
                 tudoCerto = False
                 print('erro sintatico var 1')
                 return tudoCerto
+            voltarPosicao += 1
             if(not self.fecha_colchete()):
+                self.backPosicao(voltarPosicao)
                 print('erro sintatico var 2')
                 tudoCerto = False
                 return tudoCerto
@@ -737,6 +743,8 @@ class AnaliseSintatica:
                 return tudoCerto
             if(self.proximo() == ')'):
                 self.match(')')
+                tudoCerto = True
+                return tudoCerto
                 print('tudo certo fator 2')
             else:
                 print('erro sintatico fator 2')
