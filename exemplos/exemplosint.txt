@@ -1,1 +1,14 @@
-int nomefuncao (int param1){int teste; float teste2; heuller=5*6*9+5
+
+float teste3;
+int teste4
+
+int nomefuncao (int param1)
+{
+    int teste;
+    float teste2;
+    int teste;
+    heuller=5*6*9+5+7*9;
+    heuller=5*6*9+5+8*7;
+    
+}
+
