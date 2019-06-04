@@ -295,6 +295,7 @@ class AnaliseSintatica:
         else:
             tudoCerto = False
             return tudoCerto
+        print('testei aqui param_lista')
         while(self.proximo() == ','):
             self.match(',')
             print('param_lista correto 2')
@@ -419,6 +420,7 @@ class AnaliseSintatica:
             elif(self.expressao()):
                 print('CHAMEI aqui dps de expressao dar  certo')
                 voltarPosicao += 1
+                print('testei ;')
                 if(self.proximo() == ';'):
                     tudoCerto = self.match(';')
                 else:
@@ -435,30 +437,42 @@ class AnaliseSintatica:
     def selecao_decl(self):
         print('CHAMEI selecao_decl')
         tudoCerto = True
+        voltarPosicao = 0
         if(not self.match('if')):
             tudoCerto = False
             print('erro sintatico selecao_decl 1')
             return tudoCerto
+        voltarPosicao += 1
         if(not self.match('(')):
+            self.backPosicao(voltarPosicao)
             print('erro sintatico selecao_decl 2')
             tudoCerto = False
             return tudoCerto
+        voltarPosicao += 1
         if(not self.expressao()):
+            self.backPosicao(voltarPosicao)
             print('erro sintatico selecao_decl 2')
             tudoCerto = False        
             return tudoCerto
-        if(not self.match(')')):        
+        voltarPosicao += 1
+        if(not self.match(')')):
+            self.backPosicao(voltarPosicao)        
             print('erro sintatico selecao_decl 2')
             tudoCerto = False        
             return tudoCerto
+        voltarPosicao += 1
         if(not self.comando()):
+            self.backPosicao(voltarPosicao)
             print('erro sintatico selecao_decl 5')
             tudoCerto = False
             return tudoCerto
+        
         if(self.proximo() == 'else'):
+            voltarPosicao += 1
             self.match('else')
             print('tudo certo selecao_decl 1')
             if(not self.comando()):
+                self.backPosicao(voltarPosicao)
                 tudoCerto = False
                 print('erro sintatico selecao_decl 6')
                 return tudoCerto
@@ -470,46 +484,61 @@ class AnaliseSintatica:
     def iteracao_decl(self):
         print('CHAMEI iteracao_decl')
         tudoCerto = True
+        voltarPosicao = 0
         if(not self.match('while')):
             tudoCerto = False
             print('erro sintatico iteracao_decl 1')
             return tudoCerto
+        voltarPosicao += 1
         if(not self.match('(')):
+            self.backPosicao(voltarPosicao)
             tudoCerto = False
             print('erro sintatico iteracao_decl 2')
             return tudoCerto
+        voltarPosicao += 1
         if(not self.expressao()):
+            self.backPosicao(voltarPosicao)
             tudoCerto = False
             print('erro sintatico iteracao_decl 3')
             return tudoCerto
+        voltarPosicao += 1
         if(not self.match(')')):
+            self.backPosicao(voltarPosicao)
             tudoCerto = False
             print('erro sintatico iteracao_decl 4')
             return tudoCerto
+        voltarPosicao += 1
         if(not self.comando()):
+            self.backPosicao(voltarPosicao)
             tudoCerto = False
             print('erro sintatico iteracao_decl 5')
             return tudoCerto
+        #voltarPosicao += 1
         return tudoCerto
 
     def retorno_decl(self):
         print('CHAMEI retorno_decl')
         tudoCerto = True
+        voltarPosicao = 0
         if(not self.match('return')):
             print('erro sintatico retorno_decl 1')
             tudoCerto = False
             return tudoCerto
+        voltarPosicao += 1
         if(self.proximo() == ';'):
             self.match(';')
             print('tudo certo retorno_decl 1')
             tudoCerto = True
             return tudoCerto
         elif(self.expressao()):
+            voltarPosicao += 1
             if(not self.match(';')):
+                self.backPosicao(voltarPosicao)
                 print('erro sintatico retorno_decl 2')
                 tudoCerto = False
                 return tudoCerto
         else:
+            self.backPosicao(voltarPosicao)
             print('erro sintatico oficial retorno_decl')
             tudoCerto = False
             return tudoCerto

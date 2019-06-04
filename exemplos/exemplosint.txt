@@ -1,14 +1,10 @@
-
-float teste3;
-int teste4
-
-int nomefuncao (int param1)
+int nomefuncao (int teste[], int teste2[])
 {
-    int teste;
-    float teste2;
-    int teste;
-    heuller=5*6*9+5+7*9;
-    heuller=5*6*9+5+8*7;
+    if(10>5){
+        teste = 10;
+    }
+    else{
+        teste = 20;
+    }
     
 }
-
