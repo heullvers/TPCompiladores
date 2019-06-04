@@ -59,9 +59,9 @@ class AnaliseLexica(object):
             print('Indice:', indice, ', Lexema:', simbolo.lexema)
 
     def analisar(self):
-
         info_arquivo = readFile(self.nome_arquivo) #cada elemento é uma linha do arquivo
         numero_linhas_arquivo = numberRows(info_arquivo) #número de linhas do arquivo
+        
 
         #linha e coluna inicial para inicializar a análise léxica do arquivo
         linha_atual = 0

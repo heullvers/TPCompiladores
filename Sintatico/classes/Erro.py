@@ -1,7 +1,7 @@
 class Erro(object):
 
     def __init__(self, linha, descricao = None):
-        self.linha = linha + 1
+        self.linha = linha
         self.descricao = self.setDescricao(descricao)
 
     def setDescricao(self,descricao):

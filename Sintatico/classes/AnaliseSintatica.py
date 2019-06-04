@@ -6,28 +6,27 @@ class AnaliseSintatica:
         self.qntTokens = len(self.arrayTokens)
         self.posicao = 0
         self.erros = []
-        self.tokensPorLinha = self.calculaQntTokensPorLinha()
+        self.tokensPorLinha = self.calculaSomatorioTokensPorLinha()
         self.programa()
         self.imprimirErros()
-        print(self.tokensPorLinha)
 
-    def calculaQntTokensPorLinha(self):
+    def calculaSomatorioTokensPorLinha(self):
         linhaAtual = 1
         i = 0
         qntTokensLinha = 0
-        arrayTokensPorLinha = []
+        arrayTokensPorLinha = {}
         for token in self.arrayTokens:
             if(token.linha == linhaAtual):
                 qntTokensLinha += 1
             else:
+                arrayTokensPorLinha[linhaAtual] = qntTokensLinha
                 linhaAtual += 1
-                arrayTokensPorLinha.append(qntTokensLinha)
-                qntTokensLinha = 1
+                qntTokensLinha += 1
             
             #ultimo token analisado
             i += 1
             if(i == self.qntTokens):
-                arrayTokensPorLinha.append(qntTokensLinha)
+                arrayTokensPorLinha[linhaAtual] = qntTokensLinha
 
         return arrayTokensPorLinha
             
@@ -53,6 +52,7 @@ class AnaliseSintatica:
         print('posicao', self.posicao)
         if(self.posicao < self.qntTokens):
             return self.arrayTokens[self.posicao].lexema
+            
 
     def retornaLinhaToken(self):
         return self.arrayTokens[self.posicao - 1].linha
@@ -81,10 +81,16 @@ class AnaliseSintatica:
             tudoCerto = True
         
         print('terminei primeira declaracao')
-        print(self.proximo())
-        '''
+
+        qntTokensAteALinha = self.tokensPorLinha[self.retornaLinhaToken()]
+        
         while((self.posicao < self.qntTokens)):
+
             if(self.declaracao()):
+                tudoCerto = True
+                print('declaracao_lista ok')
+            elif(self.posicao < qntTokensAteALinha):
+                print('acabou a linha')
                 tudoCerto = True
             else:
                 tudoCerto = False
@@ -92,7 +98,7 @@ class AnaliseSintatica:
                 erro = Erro(self.retornaLinhaToken(), 0)
                 self.erros.append(erro)
                 return tudoCerto
-'''
+
         print('declaracoes realizadas')
         return tudoCerto
 
@@ -130,6 +136,7 @@ class AnaliseSintatica:
             return tudoCerto
         voltarPosicao += 1
         print('var_declaracao correto 2')
+
         if(self.proximo() == ';'):
             print('entrei')
             self.match(';')
@@ -143,6 +150,27 @@ class AnaliseSintatica:
                 print('erro sintatico var_declaracao 4')
                 tudoCerto = False
                 return tudoCerto
+
+            qntTokensAteALinha = self.tokensPorLinha[self.retornaLinhaToken()]
+            
+            while(self.posicao < qntTokensAteALinha):
+                if(self.proximo() != ';'):
+                    if(not self.abre_colchete()):
+                        print('erro sintatico var_declaracao 6')
+                        tudoCerto = False
+                        return tudoCerto
+                    if(not self.num_int()):
+                        print('erro sintatico var_declaracao 7')
+                        tudoCerto = False
+                        return tudoCerto
+                    if(not self.fecha_colchete()):
+                        print('erro sintatico var_declaracao 8')
+                        tudoCerto = False
+                        return tudoCerto
+                else:
+
+                    break
+
             if(not self.match(';')):
                 print('erro sintatico var_declaracao 5')
                 tudoCerto = False
@@ -222,6 +250,7 @@ class AnaliseSintatica:
             tudoCerto = False
             print('erro sintatico fun_declaracao 3')
             return tudoCerto
+        print('aqui')
         if(not self.params()):
             tudoCerto = False
             print('erro sintatico fun_declaracao 4')
@@ -278,18 +307,18 @@ class AnaliseSintatica:
             tudoCerto = False
             print('erro sintatico param 2')
             return tudoCerto
+
         if(self.abre_colchete()):
             print('tudo certo param 1')
             if(not self.fecha_colchete()):
                 tudoCerto = False
                 print('erro sintatico param 3')
                 return tudoCerto
-        #else:
-            #print('implementar aqui')
 
         return tudoCerto
 
     def composto_decl(self):
+        print('chamei composto_decl')
         tudoCerto = True
         if(not self.abre_chave()):
             tudoCerto = False
@@ -311,22 +340,36 @@ class AnaliseSintatica:
         return tudoCerto
 
     def local_declaracoes(self):
+        print('chamei local_declaracoes')
         tudoCerto = True
-        while(tudoCerto):
+        qntTokensAteALinha = self.tokensPorLinha[self.retornaLinhaToken()]
+        while((tudoCerto) and (self.posicao < qntTokensAteALinha)):
             if(not self.var_declaracao()):
-                tudoCerto = False
-                return tudoCerto
+                if(not self.comando_lista()):
+                    print('por aqui não deu o comando_lista')
+                    print('erro sintatico oficial local_declaracoes')
+                    tudoCerto = False
+                    return tudoCerto
         return tudoCerto
 
     def comando_lista(self): 
+        print('chamei comando_lista')
         tudoCerto = True
-        while(tudoCerto):
+        qntTokensAteALinha = self.tokensPorLinha[self.retornaLinhaToken()]
+        print('QNT TOKENS ATEH A LINHA', qntTokensAteALinha)
+        print('POSICAO', self.posicao)
+        print('aqui')
+        while((tudoCerto) and (self.posicao < qntTokensAteALinha)):
+            print('QNT TOKENS ATEH A LINHA', qntTokensAteALinha)
+            print('POSICAO', self.posicao)
             if(not self.comando()):
+                print('erro sintatico oficial comando_lista')
                 tudoCerto = False
                 return tudoCerto
         return tudoCerto
 
     def comando(self):
+        print('chamei comando')
         if(self.expressao_decl()):
             print('tudo certo comando 1')
             tudoCerto = True
@@ -349,20 +392,25 @@ class AnaliseSintatica:
         return tudoCerto
 
     def expressao_decl(self):
-        if(self.proximo() == ';'):
-            self.match(';')
-            tudoCerto = True
-            print('tudo certo expressao_decl 1')
-        elif(self.expressao()):
-            tudoCerto = self.match(';')
-            print('tudo certo expressao_decl 2')
+        print('chamei expressao_decl')
+        if(self.posicao < self.qntTokens):
+            if(self.proximo() == ';'):
+                self.match(';')
+                tudoCerto = True
+                print('tudo certo expressao_decl 1')
+            elif(self.expressao()):
+                tudoCerto = self.match(';')
+                print('tudo certo expressao_decl 2')
+            else:
+                tudoCerto = False
+                print('erro sintatico oficial expressao_decl')
         else:
             tudoCerto = False
-            print('erro sintatico oficial expressao_decl')
 
         return tudoCerto
 
     def selecao_decl(self):
+        print('chamei selecao_decl')
         tudoCerto = True
         if(not self.match('if')):
             tudoCerto = False
@@ -397,6 +445,7 @@ class AnaliseSintatica:
             #print('implementar aqui')
 
     def iteracao_decl(self):
+        print('chamei iteracao_decl')
         tudoCerto = True
         if(not self.match('while')):
             tudoCerto = False
@@ -421,6 +470,7 @@ class AnaliseSintatica:
         return tudoCerto
 
     def retorno_decl(self):
+        print('chamei retorno_decl')
         tudoCerto = True
         if(not self.match('return')):
             print('erro sintatico retorno_decl 1')
@@ -444,35 +494,41 @@ class AnaliseSintatica:
         return tudoCerto
 
     def expressao(self):
-        tudoCerto = True
-        if(self.var()):
-            print('tudo certo expressao 1')
-            if(not self.match('=')):
-                tudoCerto = False
-                print('erro sintatico expressao 1')
+        print('chamei expressao')
+        tudoCerto = False
+        print('posicao', self.posicao)
+        print('tamanho', self.qntTokens)
+        if(self.posicao < self.qntTokens):
+            if(self.var()):
+                print('tudo certo expressao 1')
+                if(not self.match('=')):
+                    tudoCerto = False
+                    print('erro sintatico expressao 1')
+                    return tudoCerto
+                if(not self.expressao()):
+                    tudoCerto = False
+                    print('erro sintatico expressao 2')
+                    return tudoCerto
+            elif(self.expressao_simples()):
+                print('tudo certo expressao 2')
+                tudoCerto = True
                 return tudoCerto
-            if(not self.expressao()):
+            else:
+                print('erro sintatico oficial expressao')
                 tudoCerto = False
-                print('erro sintatico expressao 2')
                 return tudoCerto
-        elif(self.expressao_simples()):
-            print('tudo certo expressao 2')
-            tudoCerto = True
-            return tudoCerto
-        else:
-            print('erro sintatico oficial expressao')
-            tudoCerto = False
-            return tudoCerto
 
         return tudoCerto
 
     def var(self):
+        print('chamei var')
         tudoCerto = True
         if(self.ident()):
             print('tudo certo var 1')
         else:
             print('erro sintatico oficial var')
             tudoCerto = False
+            return tudoCerto
 
         if(self.abre_colchete()):
             if(not self.expressao()):
@@ -487,9 +543,10 @@ class AnaliseSintatica:
         return tudoCerto
 
     def expressao_simples(self):
+        print('chamei expressao_simples')
         tudoCerto = True
         if(self.expressao_soma()):
-            print('tudo certo expressao_simples')
+            print('tudo certo expressao_simples 1')
             if(not self.relacional()):
                 print('erro sintatico expressao_simples 1')
                 tudoCerto = False
@@ -531,6 +588,7 @@ class AnaliseSintatica:
         return tudoCerto
 
     def expressao_soma(self):
+        print('chamei expressao_soma')
         tudoCerto = True
         if(not self.termo()):
             print('erro sintatico expressao_soma 1')
@@ -547,20 +605,36 @@ class AnaliseSintatica:
         return tudoCerto
 
     def soma(self):
+        print('chamei soma')
         tudoCerto = True
-        if(self.proximo() == '+'):
-            self.match('+')
-            print('tudo certo soma 1')
-        elif(self.proximo() == '-'):
-            self.match('-')
-            print('tudo certo soma 2')
+        print('PROXIMO', self.proximo())
+
+        tem = False
+        if(self.posicao < self.qntTokens):
+            if(('-' in self.proximo()) or ('+' in self.proximo())):
+                tem = True
+
+            if(self.proximo() == '+'):
+                self.match('+')
+                print('tudo certo soma 1')
+            elif(self.proximo() == '-'):
+                self.match('-')
+                print('tudo certo soma 2')
+            elif(tem):
+                tudoCerto = True
+                print('tudo certo soma 3')
+            else:
+                tudoCerto = False
+                print('erro sintatico oficial soma')
+                return tudoCerto
         else:
             tudoCerto = False
-            print('erro sintatico oficial soma')
-            return tudoCerto
+
+        return tudoCerto
 
 
     def termo(self):
+        print('chamei termo')
         tudoCerto = True
         if(not self.fator()):
             tudoCerto = False
@@ -573,9 +647,11 @@ class AnaliseSintatica:
                 tudoCerto = False
                 return tudoCerto
 
+        print('tudo certo termo')
         return tudoCerto
 
     def mult(self):
+        print('chamei mult')
         tudoCerto = True
         if(self.proximo() == '*'):
             print('tudo certo mult 1')
@@ -590,6 +666,7 @@ class AnaliseSintatica:
         return tudoCerto
 
     def fator(self):
+        print('chamei fator')
         tudoCerto = True
         if(self.proximo() == '('):
             self.match('(')
@@ -611,10 +688,10 @@ class AnaliseSintatica:
         elif(self.ativacao()):
             print('tudo certo fator 4')
             return tudoCerto
-        elif(self.num()):
+        elif(self.num_int()):
             print('tudo certo fator 5')
             return tudoCerto
-        elif(self.num_int()):
+        elif(self.num()):
             print('tudo certo fator 6')
             return tudoCerto
         else:
@@ -623,6 +700,7 @@ class AnaliseSintatica:
             return tudoCerto
 
     def ativacao(self):
+        print('chamei ativacao')
         tudoCerto = True
         if(not self.ident()):
             print('erro sintatico ativacao 1')
@@ -727,6 +805,7 @@ class AnaliseSintatica:
 
 
     def num_int(self):
+        print('chamei num_int')
         tudoCerto = True
         digitos = list(self.proximo())
         print('tamanho digitos', len(digitos))
@@ -740,6 +819,7 @@ class AnaliseSintatica:
         else:
             print('erro oficial num_int')
             tudoCerto = False
+            return tudoCerto
 
         self.setPosicao() #match do num_int
         print('tudo certo num_int')
@@ -749,7 +829,7 @@ class AnaliseSintatica:
     def digito(self, digito):
         print('chamei digito')
         tudoCerto = True
-        digitos = ['0','1','2','3','4','5','6','7','8','9']
+        digitos = ['0','1','2','3','4','5','6','7','8','9','+','-']
         if digito not in digitos:
             print('erro sintatico oficial digito')
             tudoCerto = False
@@ -764,7 +844,10 @@ class AnaliseSintatica:
 
         print('proximo', self.proximo())
         print('tipo', type(self.proximo()))
-        caracteres = list(self.proximo())
+        if(self.posicao < self.qntTokens):
+            caracteres = list(self.proximo())
+        else:
+            return False
         contador = 0
         print('caracteres', caracteres)
         if(self.letra(caracteres[contador])):
@@ -777,6 +860,7 @@ class AnaliseSintatica:
         else:
             print('erro sintatico oficial ident')
             tudoCerto = False
+            return tudoCerto
 
         print('tudo certo ident')
         self.setPosicao() #match do identificador

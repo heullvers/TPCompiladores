@@ -1,3 +1,1 @@
-int teste[5];
-int ghj;
-float teste[5];
+int nomefuncao (int param1){int teste; float teste2; heuller=5*6*9+5
