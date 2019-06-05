@@ -54,6 +54,9 @@ class AnaliseSintatica:
             return self.arrayTokens[self.posicao].lexema
             
 
+    def retornaToken(self):
+        return self.arrayTokens[self.posicao - 1]
+
     def retornaLinhaToken(self):
         return self.arrayTokens[self.posicao - 1].linha
 
@@ -61,7 +64,7 @@ class AnaliseSintatica:
         print('ERROS:')
         if(len(self.erros) > 0):
             for erro in self.erros:
-                print('Linha:', erro.linha, 'Descrição:', erro.descricao)
+                print('Linha:', erro.linha, 'Coluna:', erro.coluna)
         else:
             print('Não foi encontrado erros sintáticos')
     
@@ -73,7 +76,8 @@ class AnaliseSintatica:
         print('CHAMEI declaracao_lista')
         if(not self.declaracao()):
             print('erro sintatico oficial declaracao_lista 1')
-            erro = Erro(self.retornaLinhaToken(), 0)
+            token = self.retornaToken()
+            erro = Erro(token.linha, token.coluna)
             self.erros.append(erro)
             tudoCerto = False
             return tudoCerto
@@ -92,7 +96,8 @@ class AnaliseSintatica:
             else:
                 tudoCerto = False
                 print('erro sintatico oficial declaracao_lista 2')
-                erro = Erro(self.retornaLinhaToken(), 0)
+                token = self.retornaToken()
+                erro = Erro(token.linha, token.coluna)
                 self.erros.append(erro)
                 return tudoCerto
             '''elif(self.posicao < qntTokensAteALinha):
@@ -114,8 +119,6 @@ class AnaliseSintatica:
             tudoCerto = True
         else:
             tudoCerto = False
-            erro = Erro(self.retornaLinhaToken(), 1)
-            self.erros.append(erro)
             print('erro sintatico oficial declaracao')
             return tudoCerto
 

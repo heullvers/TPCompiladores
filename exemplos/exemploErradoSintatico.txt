@@ -1,7 +1,7 @@
 
 /* O ANALISADOR SINTÁTICO FOI CONSTRUÍDO DE FORMA A SINALIZAR, MAS NÃO CONTINUAR ANÁLISE APÓS IDENTIFICAÇÃO DO PRIMEIRO ERRO */
 
-float funcaoum(int teste2,){ /*ERRO, ao digitar uma vírgula após passar um parâmetro, é preciso digitar o próximo parâmetro*/
+float funcaoum(int teste2, ){ /*ERRO, ao digitar uma vírgula após passar um parâmetro, é preciso digitar o próximo parâmetro*/
 
     float variaveltres = 5 /*ERRO, ao terminar expressão é preciso ponto e vírgula*/
 
