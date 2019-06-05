@@ -560,7 +560,7 @@ class AnaliseSintatica:
                     tudoCerto = False
                     print('erro sintatico expressao 1')
                     return tudoCerto
-                voltarPosicao += 1
+                #voltarPosicao += 1
                 if(not self.expressao()):
                     tudoCerto = False
                     print('erro sintatico expressao 2')
@@ -752,10 +752,17 @@ class AnaliseSintatica:
                 return tudoCerto
         elif(self.var()):
             print('tudo certo fator 3')
-            return tudoCerto
-        elif(self.ativacao()):
-            print('tudo certo fator 4')
-            return tudoCerto
+            if(self.proximo() == '('):
+                if(self.ativacao()):
+                    tudoCerto = True
+                    return tudoCerto
+                else:
+                    tudoCerto = False
+                    return tudoCerto
+                print('PROXIMO EH PARENTESES')
+            else:
+                print('PROXIMO NAO EH PARENTESES')
+                return tudoCerto
         elif(self.num_int()):
             print('tudo certo fator 5')
             return tudoCerto
@@ -772,10 +779,12 @@ class AnaliseSintatica:
     def ativacao(self):
         print('CHAMEI ativacao')
         tudoCerto = True
+        ''' esta chamando direto de var no fator
         if(not self.ident()):
             print('erro sintatico ativacao 1')
             tudoCerto = False
             return tudoCerto
+        '''
 
         if(self.proximo() == '('):
             self.match('(')
@@ -787,6 +796,8 @@ class AnaliseSintatica:
             if(self.proximo() == ')'):
                 print('tudo certo ativaca 2')
                 self.match(')')
+                tudoCerto = True
+                return tudoCerto
             else:
                 print('erro sintatico ativacao 3')
                 tudoCerto = False
@@ -799,8 +810,12 @@ class AnaliseSintatica:
     def args(self):
         print('CHAMEI args')
         #opcional
-        self.arg_lista()
-        return True
+        if(self.arg_lista()):
+            print('args tudo certo')
+            return True
+        else:
+            print('erro sintatico oficial args')
+            return False
 
     def arg_lista(self):
         print('CHAMEI arg_lista')
