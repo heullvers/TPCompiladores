@@ -561,6 +561,20 @@ class AnaliseSintatica:
                 if(not self.match('=')):
                     self.backPosicao(voltarPosicao)
                     tudoCerto = False
+                    print('PROXIMOOOOOOO DEPOIS DE VER QUE NÃO É IGUAL', self.proximo())
+                    print('TENTANDO EXPRESSAO SIMPLES POR AQUI')
+                    if((self.proximo() == 'while') or (self.proximo() == 'if')): #dessa forma fator consegue chamar var
+                        print('É IGUAL A WHILE')
+                        return tudoCerto
+                    else:
+                        if(self.expressao_simples()):
+                            tudoCerto = True
+                            return tudoCerto
+                        else:
+                            tudoCerto = False
+                            return tudoCerto
+                        print('NÃO É IGUAL A WHILE')
+
                     print('erro sintatico expressao 1')
                     return tudoCerto
                 #voltarPosicao += 1
@@ -813,7 +827,9 @@ class AnaliseSintatica:
     def args(self):
         print('CHAMEI args')
         #opcional
-        if(self.arg_lista()):
+        if(self.proximo() == ')'):
+            return True
+        elif(self.arg_lista()):
             print('args tudo certo')
             return True
         else:
