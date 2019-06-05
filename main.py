@@ -6,7 +6,7 @@ nome_arquivo = 'exemplos/' + nome_arquivo #nome do arquivo
 
 anLex = AnaliseLexica(nome_arquivo)
 
-anLex.imprimirTokens()
+#anLex.imprimirTokens()
 anSint = AnaliseSintatica(anLex.tokens)
 
 
