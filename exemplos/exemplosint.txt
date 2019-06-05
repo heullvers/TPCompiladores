@@ -1,0 +1,5 @@
+int funcao(void){
+    while(contador() > 5){
+        var = 10+5;
+    }
+}

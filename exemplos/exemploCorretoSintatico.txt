@@ -3,15 +3,15 @@ int main(void){
     float variaveldois;
 
     variavelum = 5;
-    variaveldois = 10;
+    variaveldois = 10 * variavelum + 5;
 }
 
 float funcaoum(int param1, float param2){
-        float variaveltres;
         if((1) < 2){
-            while(3 >= 3){
-                variaveltres = 3;
-                return;
+            float contador;
+            while(contador >= 3){
+                contador = contador + 1;
             }
+            return ;
         }
 }

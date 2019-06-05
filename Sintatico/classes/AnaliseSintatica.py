@@ -421,8 +421,17 @@ class AnaliseSintatica:
                 if(not self.match('=')):
                     self.backPosicao(voltarPosicao)
                     tudoCerto = False
+                    if((self.proximo() == 'while') or (self.proximo() == 'if')): #dessa forma fator consegue chamar var
+                        return tudoCerto
+                    else:
+                        if(self.expressao_simples()):
+                            tudoCerto = True
+                            return tudoCerto
+                        else:
+                            tudoCerto = False
+                            return tudoCerto
+
                     return tudoCerto
-                #voltarPosicao += 1
                 if(not self.expressao()):
                     tudoCerto = False
                     return tudoCerto
@@ -603,7 +612,10 @@ class AnaliseSintatica:
 
     def args(self):
         #opcional
-        if(self.arg_lista()):
+        if(self.proximo() == ')'):
+            return True
+        elif(self.arg_lista()):
+            print('args tudo certo')
             return True
         else:
             return False
