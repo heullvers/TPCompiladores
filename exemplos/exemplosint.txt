@@ -1,7 +1,0 @@
-int nomefuncao (int teste[], int teste2[])
-{
-    if((5) > 8){
-        
-    }
-    
-}

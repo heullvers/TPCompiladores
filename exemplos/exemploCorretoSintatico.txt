@@ -1,0 +1,17 @@
+int main(void){
+    int variavelum;
+    float variaveldois;
+
+    variavelum = 5;
+    variaveldois = 10;
+}
+
+float funcaoum(int param1, float param2){
+        float variaveltres;
+        if((1) < 2){
+            while(3 >= 3){
+                variaveltres = 3;
+                return;
+            }
+        }
+}
